@@ -16,6 +16,13 @@
 		A529C30728FEFFA000E2FD55 /* ViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30328FEFFA000E2FD55 /* ViewInterface.swift */; };
 		A529C30828FEFFA000E2FD55 /* InteractorInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30428FEFFA000E2FD55 /* InteractorInterface.swift */; };
 		A529C30928FEFFA000E2FD55 /* PresenterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30528FEFFA000E2FD55 /* PresenterInterface.swift */; };
+		A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */; };
+		A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC74291C0E2700253DB3 /* SnapKit */; };
+		A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC77291C167B00253DB3 /* Reusable */; };
+		A5F0DC7A291C1FF900253DB3 /* TalkieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC79291C1FF900253DB3 /* TalkieViewController.swift */; };
+		A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC7C291C252D00253DB3 /* SPIndicator */; };
+		A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */; };
+		A5F0DC87291D1DC100253DB3 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC86291D1DC100253DB3 /* AudioRecorder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +37,10 @@
 		A529C30328FEFFA000E2FD55 /* ViewInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewInterface.swift; sourceTree = "<group>"; };
 		A529C30428FEFFA000E2FD55 /* InteractorInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractorInterface.swift; sourceTree = "<group>"; };
 		A529C30528FEFFA000E2FD55 /* PresenterInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterInterface.swift; sourceTree = "<group>"; };
+		A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
+		A5F0DC79291C1FF900253DB3 /* TalkieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkieViewController.swift; sourceTree = "<group>"; };
+		A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamer.swift; sourceTree = "<group>"; };
+		A5F0DC86291D1DC100253DB3 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +48,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */,
+				A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */,
+				A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,7 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				A529C2C828FEF96200E2FD55 /* Application */,
-				A529C2C928FEF96A00E2FD55 /* Scenes */,
+				A529C2C928FEF96A00E2FD55 /* Modules */,
 				A529C2CA28FEF96F00E2FD55 /* Resources */,
 			);
 			path = Task1;
@@ -80,12 +94,14 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		A529C2C928FEF96A00E2FD55 /* Scenes */ = {
+		A529C2C928FEF96A00E2FD55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				A5F0DC70291C0ADE00253DB3 /* Services */,
 				A529C2B728FEF60500E2FD55 /* ViewController.swift */,
+				A5F0DC79291C1FF900253DB3 /* TalkieViewController.swift */,
 			);
-			path = Scenes;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		A529C2CA28FEF96F00E2FD55 /* Resources */ = {
@@ -116,6 +132,16 @@
 			path = ViperBase;
 			sourceTree = "<group>";
 		};
+		A5F0DC70291C0ADE00253DB3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */,
+				A5F0DC86291D1DC100253DB3 /* AudioRecorder.swift */,
+				A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,6 +158,11 @@
 			dependencies = (
 			);
 			name = Task1;
+			packageProductDependencies = (
+				A5F0DC74291C0E2700253DB3 /* SnapKit */,
+				A5F0DC77291C167B00253DB3 /* Reusable */,
+				A5F0DC7C291C252D00253DB3 /* SPIndicator */,
+			);
 			productName = AvitoInternship2022;
 			productReference = A529C2B028FEF60500E2FD55 /* Task1.app */;
 			productType = "com.apple.product-type.application";
@@ -148,6 +179,7 @@
 				TargetAttributes = {
 					A529C2AF28FEF60500E2FD55 = {
 						CreatedOnToolsVersion = 14.0;
+						LastSwiftMigration = 1400;
 					};
 				};
 			};
@@ -160,6 +192,11 @@
 				Base,
 			);
 			mainGroup = A529C2A728FEF60500E2FD55;
+			packageReferences = (
+				A5F0DC73291C0E2700253DB3 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				A5F0DC76291C167B00253DB3 /* XCRemoteSwiftPackageReference "Reusable" */,
+				A5F0DC7B291C252D00253DB3 /* XCRemoteSwiftPackageReference "SPIndicator" */,
+			);
 			productRefGroup = A529C2B128FEF60500E2FD55 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -187,10 +224,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A529C30628FEFFA000E2FD55 /* BaseWireframe.swift in Sources */,
+				A5F0DC7A291C1FF900253DB3 /* TalkieViewController.swift in Sources */,
 				A529C30828FEFFA000E2FD55 /* InteractorInterface.swift in Sources */,
 				A529C2B828FEF60500E2FD55 /* ViewController.swift in Sources */,
 				A529C30928FEFFA000E2FD55 /* PresenterInterface.swift in Sources */,
+				A5F0DC87291D1DC100253DB3 /* AudioRecorder.swift in Sources */,
 				A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */,
+				A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */,
+				A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */,
 				A529C30728FEFFA000E2FD55 /* ViewInterface.swift in Sources */,
 				A529C2FE28FEFE3300E2FD55 /* Assets.swift in Sources */,
 			);
@@ -267,6 +308,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 			};
 			name = Debug;
 		};
@@ -320,6 +362,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -328,6 +371,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4D7YJ8BY8H;
@@ -349,6 +393,8 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -358,6 +404,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4D7YJ8BY8H;
@@ -379,6 +426,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -406,6 +454,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A5F0DC73291C0E2700253DB3 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		A5F0DC76291C167B00253DB3 /* XCRemoteSwiftPackageReference "Reusable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/Reusable.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		A5F0DC7B291C252D00253DB3 /* XCRemoteSwiftPackageReference "SPIndicator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ivanvorobei/SPIndicator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A5F0DC74291C0E2700253DB3 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5F0DC73291C0E2700253DB3 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		A5F0DC77291C167B00253DB3 /* Reusable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5F0DC76291C167B00253DB3 /* XCRemoteSwiftPackageReference "Reusable" */;
+			productName = Reusable;
+		};
+		A5F0DC7C291C252D00253DB3 /* SPIndicator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5F0DC7B291C252D00253DB3 /* XCRemoteSwiftPackageReference "SPIndicator" */;
+			productName = SPIndicator;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A529C2A828FEF60500E2FD55 /* Project object */;
 }
