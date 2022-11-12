@@ -31,6 +31,8 @@ final class ConnectionManager: NSObject {
     private let audioRecorder = AudioRecorder()
     private var player: AVAudioPlayer?
 
+    private let audioEngine = AudioStreamer()
+
     override init() {
         super.init()
         session = .init(peer: myPeerId, securityIdentity: nil, encryptionPreference: .required)
@@ -75,18 +77,48 @@ final class ConnectionManager: NSObject {
         session?.disconnect()
     }
 
-    func startStreamingVoice() {
-        audioRecorder.startRecording()
+    func startStreamingVoice(to peer: MCPeerID) {
+        sendMessage(mes: "voice_start", to: peer)
+//        audioRecorder.startRecording()
+        audioEngine.startStreaming { data in
+            do {
+                try self.session?.send(data, toPeers: [peer], with: .reliable)
+            } catch {
+                DispatchQueue.main.async {
+                    SPIndicator.present(title: error.localizedDescription, preset: .error)
+                }
+            }
+        }
     }
 
-    func stopStreamingVoice(_ peer: MCPeerID) {
-        let url = audioRecorder.stopRecording()
-        session?.sendResource(at: url, withName: "voice", toPeer: peer)
+    func stopStreamingVoice(to peer: MCPeerID) {
+//        let url = audioRecorder.stopRecording()
+        audioEngine.stopStreaming()
+        sendMessage(mes: "voice_end", to: peer)
+//        session?.sendResource(at: url, withName: "voice", toPeer: peer)
     }
+
+    private var isGettingVoice = false
 }
 
 extension ConnectionManager: MCSessionDelegate {
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        if let str = String(data: data, encoding: .utf8) {
+            if str == "voice_start" {
+                isGettingVoice = true
+                return
+            } else if str == "voice_end" {
+                isGettingVoice = false
+                return
+            }
+        }
+
+        if isGettingVoice {
+            print("Received voice data with size: \(data.count)")
+            audioEngine.schedulePlay(data)
+            return
+        }
+
         if let str = String(data: data, encoding: .utf8) {
             if str == "Talk" {
                 blockTalk?("Receiving audio")

@@ -95,20 +95,18 @@ class TalkieViewController: UIViewController {
     private func talk() {
         talkButton.backgroundColor = .blue.withAlphaComponent(0.3)
         talkButton.setTitle("Recording", for: .normal)
-        print("Talk")
 
-        conn.sendMessage(mes: "Talk", to: peer)
-        conn.startStreamingVoice()
+//        conn.sendMessage(mes: "Talk", to: peer)
+        conn.startStreamingVoice(to: peer)
     }
 
     @objc
     private func end() {
         talkButton.backgroundColor = .blue.withAlphaComponent(0.5)
         talkButton.setTitle("Talk", for: .normal)
-        print("End")
 
-        conn.sendMessage(mes: "End", to: peer)
-        conn.stopStreamingVoice(peer)
+//        conn.sendMessage(mes: "End", to: peer)
+        conn.stopStreamingVoice(to: peer)
     }
 
     @objc
