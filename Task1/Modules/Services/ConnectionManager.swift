@@ -9,14 +9,34 @@ import Foundation
 import MultipeerConnectivity
 import SPIndicator
 import AVFoundation
+import CoreLocation
 
 final class ConnectionManager: NSObject {
+    private enum SendFlags {
+        enum Voice {
+            static let start = "&voice_start"
+            static let end = "&voice_end"
+        }
+
+        enum Location {
+            static let flag = "&location" // &location_lat=54.3442354_lon=32.344424
+        }
+    }
     private static let service = "walkie-talkie"
 
     let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private var advertiserAssistant: MCNearbyServiceAdvertiser?
     private var nearbyServiceBrowser: MCNearbyServiceBrowser?
     private var session: MCSession?
+    private lazy var locationManager: CLLocationManager = {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        return locationManager
+    }()
+    private var location: CLLocation?
+
+    private var peerToSendLocation: MCPeerID?
 
     typealias PeerBlock = (MCPeerID) -> Void
 
@@ -27,9 +47,7 @@ final class ConnectionManager: NSObject {
 
     var blockTalk: ((String) -> Void)?
     var unblockTalk: (() -> Void)?
-
-    private let audioRecorder = AudioRecorder()
-    private var player: AVAudioPlayer?
+    var addPoint: ((CLLocation) -> Void)?
 
     private let audioEngine = AudioStreamer()
 
@@ -78,11 +96,10 @@ final class ConnectionManager: NSObject {
     }
 
     func startStreamingVoice(to peer: MCPeerID) {
-        sendMessage(mes: "voice_start", to: peer)
-//        audioRecorder.startRecording()
+        sendMessage(mes: SendFlags.Voice.start, to: peer)
         audioEngine.startStreaming { data in
             do {
-                try self.session?.send(data, toPeers: [peer], with: .reliable)
+                try self.session?.send(data, toPeers: [peer], with: .unreliable)
             } catch {
                 DispatchQueue.main.async {
                     SPIndicator.present(title: error.localizedDescription, preset: .error)
@@ -92,10 +109,18 @@ final class ConnectionManager: NSObject {
     }
 
     func stopStreamingVoice(to peer: MCPeerID) {
-//        let url = audioRecorder.stopRecording()
         audioEngine.stopStreaming()
-        sendMessage(mes: "voice_end", to: peer)
-//        session?.sendResource(at: url, withName: "voice", toPeer: peer)
+        sendMessage(mes: SendFlags.Voice.end, to: peer)
+    }
+
+    func sendLocation(to peer: MCPeerID) {
+        peerToSendLocation = peer
+        requestLocationAccess()
+        locationManager.requestLocation()
+    }
+
+    private func requestLocationAccess() {
+        locationManager.requestWhenInUseAuthorization()
     }
 
     private var isGettingVoice = false
@@ -103,54 +128,54 @@ final class ConnectionManager: NSObject {
 
 extension ConnectionManager: MCSessionDelegate {
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        if let str = String(data: data, encoding: .utf8) {
-            if str == "voice_start" {
+        if let str = String(data: data, encoding: .utf8),
+           str.first == "&"
+        {
+            if str == SendFlags.Voice.start {
                 isGettingVoice = true
+                blockTalk?("Receiving")
                 return
-            } else if str == "voice_end" {
+            } else if str == SendFlags.Voice.end {
                 isGettingVoice = false
+                unblockTalk?()
                 return
+            } else {
+                let components = str.split(separator: "_")
+                if components[0] == SendFlags.Location.flag {
+                    if let lat = Double(components[1].split(separator: "=")[1]),
+                       let lon = Double(components[2].split(separator: "=")[1])
+                    {
+                        if let location = self.location {
+                            let anotherLocation = CLLocation(latitude: lat, longitude: lon)
+
+                            let distanceInMeters = location.distance(from: anotherLocation)
+                            print("Distance: \(distanceInMeters)")
+
+                            self.addPoint?(anotherLocation)
+                        }
+                        print("Got location: lat = \(lat), lon = \(lon)")
+                    }
+                }
             }
         }
 
         if isGettingVoice {
-            print("Received voice data with size: \(data.count)")
             audioEngine.schedulePlay(data)
             return
         }
 
         if let str = String(data: data, encoding: .utf8) {
-            if str == "Talk" {
-                blockTalk?("Receiving audio")
-            } else if str == "End" {
-
-            } else {
-                DispatchQueue.main.async {
-                    SPIndicator.present(title: str, preset: .done)
-                }
+            DispatchQueue.main.async {
+                SPIndicator.present(title: str, preset: .done)
             }
         }
     }
 
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
 
-    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-        blockTalk?("Playing")
-    }
+    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {}
 
-    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
-        guard let localURL = localURL else { return }
-        print("Playing \(localURL)")
-        do {
-            player = try AVAudioPlayer(contentsOf: localURL)
-            player?.delegate = self
-            player?.play()
-        } catch {
-            DispatchQueue.main.async {
-                SPIndicator.present(title: error.localizedDescription, preset: .error)
-            }
-        }
-    }
+    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {}
 
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
@@ -193,23 +218,33 @@ extension ConnectionManager: MCNearbyServiceBrowserDelegate {
     }
 }
 
-extension ConnectionManager: StreamDelegate {
-    func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
-        switch eventCode {
-        case .hasBytesAvailable:
-            let input = aStream as! InputStream
-            var buffer = [UInt8](repeating: 0, count: 5000)
-            let numberBytes = input.read(&buffer, maxLength: buffer.count)
-            let dataString = NSData(bytes: &buffer, length: numberBytes)
-            //            audioStreamer.scheduleBufferPlay(audioStreamer.dataToPCMBuffer(data: dataString)!)
+extension ConnectionManager: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let status = CLLocationManager.authorizationStatus()
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            sendLocation(to: peerToSendLocation!)
         default:
             break
         }
     }
-}
 
-extension ConnectionManager: AVAudioPlayerDelegate {
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        unblockTalk?()
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            self.location = location
+            let latitude = location.coordinate.latitude
+            let longitude = location.coordinate.longitude
+
+            let encoded = "\(SendFlags.Location.flag)_lat=\(latitude)_lon=\(longitude)"
+            if let data = encoded.data(using: .utf8),
+               let peer = peerToSendLocation
+            {
+                try? session?.send(data, toPeers: [peer], with: .reliable)
+            }
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        SPIndicator.present(title: error.localizedDescription, haptic: .error)
     }
 }

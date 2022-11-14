@@ -42,15 +42,13 @@ class AudioStreamer {
         }
     }
 
-    func startStreaming(sendData: @escaping (Data) -> Void /*to stream: OutputStream*/) {
-//        outputStream = stream
+    func startStreaming(sendData: @escaping (Data) -> Void) {
         self.sendData = sendData
         audioEngine?.inputNode.installTap(
             onBus: 0,
-            bufferSize: 4800,
+            bufferSize: 48000 * 3,
             format: audioFormat
-        ) { buffer, time in
-            print("Sending buffer with time \(time)")
+        ) { buffer, _ in
             let data = self.audioBufferToNSData(PCMBuffer: buffer)
             self.sendData?(Data(referencing: data))
         }
@@ -58,7 +56,6 @@ class AudioStreamer {
 
     func stopStreaming() {
         audioEngine?.inputNode.removeTap(onBus: 0)
-//        outputStream?.close()
         sendData = nil
     }
 

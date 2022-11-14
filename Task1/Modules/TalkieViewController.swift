@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import MultipeerConnectivity
 import Reusable
+import MapKit
 
 class TalkieViewController: UIViewController {
     private let conn: ConnectionManager
@@ -34,11 +35,24 @@ class TalkieViewController: UIViewController {
                 self.talkButton.setTitle("Talk", for: .normal)
             }
         }
+
+        conn.addPoint = { location in
+            self.addPoint(with: location)
+        }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    private lazy var mapView = {
+        let map = MKMapView()
+        map.delegate = self
+        map.showsUserLocation = true
+        map.layer.cornerRadius = 10
+        map.showsCompass = true
+        return map
+    }()
 
     private lazy var talkButton: UIButton = {
         let button = UIButton()
@@ -65,6 +79,16 @@ class TalkieViewController: UIViewController {
         return button
     }()
 
+    private lazy var sendLocationButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .gray.withAlphaComponent(0.15)
+        button.layer.cornerRadius = 30
+        button.setTitle("📍", for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.font = .systemFont(ofSize: 30)
+        button.addTarget(self, action: #selector(sendLocation), for: .touchDown)
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,8 +98,17 @@ class TalkieViewController: UIViewController {
     }
 
     private func setup() {
+        view.addSubview(mapView)
         view.addSubview(talkButton)
         view.addSubview(sendOkButton)
+        view.addSubview(sendLocationButton)
+
+        mapView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.bottom.equalTo(talkButton.snp.top).offset(-20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().inset(20)
+        }
 
         talkButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -89,6 +122,12 @@ class TalkieViewController: UIViewController {
             make.bottom.equalToSuperview().inset(20)
             make.width.height.equalTo(60)
         }
+
+        sendLocationButton.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.bottom.equalToSuperview().inset(20)
+            make.width.height.equalTo(60)
+        }
     }
 
     @objc
@@ -96,7 +135,6 @@ class TalkieViewController: UIViewController {
         talkButton.backgroundColor = .blue.withAlphaComponent(0.3)
         talkButton.setTitle("Recording", for: .normal)
 
-//        conn.sendMessage(mes: "Talk", to: peer)
         conn.startStreamingVoice(to: peer)
     }
 
@@ -105,7 +143,6 @@ class TalkieViewController: UIViewController {
         talkButton.backgroundColor = .blue.withAlphaComponent(0.5)
         talkButton.setTitle("Talk", for: .normal)
 
-//        conn.sendMessage(mes: "End", to: peer)
         conn.stopStreamingVoice(to: peer)
     }
 
@@ -114,9 +151,29 @@ class TalkieViewController: UIViewController {
         conn.sendMessage(mes: "OK", to: peer)
     }
 
+    @objc
+    private func sendLocation() {
+        conn.sendLocation(to: peer)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         conn.disconnect()
     }
+
+    func addPoint(with location: CLLocation) {
+        DispatchQueue.main.async {
+            let annotation = MKPointAnnotation()
+            annotation.title = self.peer.displayName
+            annotation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
+                                                           longitude: location.coordinate.longitude)
+            self.mapView.addAnnotation(annotation)
+            self.mapView.showAnnotations([annotation], animated: true)
+        }
+    }
+}
+
+extension TalkieViewController: MKMapViewDelegate {
+    
 }

@@ -22,7 +22,6 @@
 		A5F0DC7A291C1FF900253DB3 /* TalkieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC79291C1FF900253DB3 /* TalkieViewController.swift */; };
 		A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC7C291C252D00253DB3 /* SPIndicator */; };
 		A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */; };
-		A5F0DC87291D1DC100253DB3 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC86291D1DC100253DB3 /* AudioRecorder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +39,6 @@
 		A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		A5F0DC79291C1FF900253DB3 /* TalkieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkieViewController.swift; sourceTree = "<group>"; };
 		A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamer.swift; sourceTree = "<group>"; };
-		A5F0DC86291D1DC100253DB3 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,7 +134,6 @@
 			isa = PBXGroup;
 			children = (
 				A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */,
-				A5F0DC86291D1DC100253DB3 /* AudioRecorder.swift */,
 				A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */,
 			);
 			path = Services;
@@ -228,7 +225,6 @@
 				A529C30828FEFFA000E2FD55 /* InteractorInterface.swift in Sources */,
 				A529C2B828FEF60500E2FD55 /* ViewController.swift in Sources */,
 				A529C30928FEFFA000E2FD55 /* PresenterInterface.swift in Sources */,
-				A5F0DC87291D1DC100253DB3 /* AudioRecorder.swift in Sources */,
 				A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */,
 				A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */,
 				A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */,
@@ -378,10 +374,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Task1/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Task1;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "I need";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need mic for walkie-talkie";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -411,10 +409,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Task1/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Task1;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "I need";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need mic for walkie-talkie";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
