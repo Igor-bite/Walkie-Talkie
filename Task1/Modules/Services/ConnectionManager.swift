@@ -11,10 +11,24 @@ import SPIndicator
 import AVFoundation
 import CoreLocation
 
+protocol ConnectionManagerDiscoveryDelegate: AnyObject {
+    func peerFound(_ peer: PeerModel)
+    func peerLost(_ peer: PeerModel)
+    func connectedToPeer(_ peer: PeerModel)
+    func disconnectedFromPeer(_ peer: PeerModel)
+}
+
+protocol ConnectionManagerSessionDelegate: AnyObject {
+    func talkBlocked(withReason reason: TalkBlockReason)
+    func talkUnblocked()
+    func updatePeerLocation(with location: CLLocation)
+}
+
 final class ConnectionManager: NSObject {
     private enum SendFlags {
         enum Voice {
             static let start = "&voice_start"
+            // voice data transmitted in between
             static let end = "&voice_end"
         }
 
@@ -24,7 +38,7 @@ final class ConnectionManager: NSObject {
     }
     private static let service = "walkie-talkie"
 
-    let myPeerId = MCPeerID(displayName: UIDevice.current.name)
+    private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private var advertiserAssistant: MCNearbyServiceAdvertiser?
     private var nearbyServiceBrowser: MCNearbyServiceBrowser?
     private var session: MCSession?
@@ -38,20 +52,14 @@ final class ConnectionManager: NSObject {
 
     private var peerToSendLocation: MCPeerID?
 
-    typealias PeerBlock = (MCPeerID) -> Void
-
-    var addPeer: PeerBlock?
-    var removePeer: PeerBlock?
-    var onConnectTo: PeerBlock?
-    var onDisconnectFrom: PeerBlock?
-
-    var blockTalk: ((String) -> Void)?
-    var unblockTalk: (() -> Void)?
-    var addPoint: ((CLLocation) -> Void)?
+    weak var discoveryDelegate: ConnectionManagerDiscoveryDelegate?
+    weak var sessionDelegate: ConnectionManagerSessionDelegate?
 
     private let audioEngine = AudioStreamer()
 
-    override init() {
+    static let shared = ConnectionManager()
+
+    private override init() {
         super.init()
         session = .init(peer: myPeerId, securityIdentity: nil, encryptionPreference: .required)
         session?.delegate = self
@@ -76,9 +84,9 @@ final class ConnectionManager: NSObject {
         nearbyServiceBrowser?.startBrowsingForPeers()
     }
 
-    func connectTo(_ peer: MCPeerID) {
+    func connectTo(_ peer: PeerModel) {
         guard let session = session else { return }
-        nearbyServiceBrowser?.invitePeer(peer, to: session, withContext: nil, timeout: 5)
+        nearbyServiceBrowser?.invitePeer(peer.mcPeer, to: session, withContext: nil, timeout: 5)
     }
 
     func sendMessage(mes: String, to peer: MCPeerID) {
@@ -95,11 +103,11 @@ final class ConnectionManager: NSObject {
         session?.disconnect()
     }
 
-    func startStreamingVoice(to peer: MCPeerID) {
-        sendMessage(mes: SendFlags.Voice.start, to: peer)
+    func startStreamingVoice(to peer: PeerModel) {
+        sendMessage(mes: SendFlags.Voice.start, to: peer.mcPeer)
         audioEngine.startStreaming { data in
             do {
-                try self.session?.send(data, toPeers: [peer], with: .unreliable)
+                try self.session?.send(data, toPeers: [peer.mcPeer], with: .reliable)
             } catch {
                 DispatchQueue.main.async {
                     SPIndicator.present(title: error.localizedDescription, preset: .error)
@@ -128,46 +136,43 @@ final class ConnectionManager: NSObject {
 
 extension ConnectionManager: MCSessionDelegate {
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        if let str = String(data: data, encoding: .utf8),
-           str.first == "&"
-        {
-            if str == SendFlags.Voice.start {
-                isGettingVoice = true
-                blockTalk?("Receiving")
-                return
-            } else if str == SendFlags.Voice.end {
-                isGettingVoice = false
-                unblockTalk?()
-                return
-            } else {
-                let components = str.split(separator: "_")
-                if components[0] == SendFlags.Location.flag {
-                    if let lat = Double(components[1].split(separator: "=")[1]),
-                       let lon = Double(components[2].split(separator: "=")[1])
-                    {
-                        if let location = self.location {
-                            let anotherLocation = CLLocation(latitude: lat, longitude: lon)
+        if let str = String(data: data, encoding: .utf8) {
+            if str.first == "&" {
+                if str == SendFlags.Voice.start {
+                    isGettingVoice = true
+                    sessionDelegate?.talkBlocked(withReason: .receiving)
+                    return
+                } else if str == SendFlags.Voice.end {
+                    isGettingVoice = false
+                    sessionDelegate?.talkUnblocked()
+                    return
+                } else {
+                    let components = str.split(separator: "_")
+                    if components[0] == SendFlags.Location.flag {
+                        if let lat = Double(components[1].split(separator: "=")[1]),
+                           let lon = Double(components[2].split(separator: "=")[1])
+                        {
+                            if let location = self.location {
+                                let anotherLocation = CLLocation(latitude: lat, longitude: lon)
 
-                            let distanceInMeters = location.distance(from: anotherLocation)
-                            print("Distance: \(distanceInMeters)")
+                                let distanceInMeters = location.distance(from: anotherLocation)
+                                print("Distance: \(distanceInMeters)")
 
-                            self.addPoint?(anotherLocation)
+                                sessionDelegate?.updatePeerLocation(with: anotherLocation)
+                            }
+                            print("Got location: lat = \(lat), lon = \(lon)")
                         }
-                        print("Got location: lat = \(lat), lon = \(lon)")
                     }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    SPIndicator.present(title: str, preset: .done)
                 }
             }
         }
 
         if isGettingVoice {
             audioEngine.schedulePlay(data)
-            return
-        }
-
-        if let str = String(data: data, encoding: .utf8) {
-            DispatchQueue.main.async {
-                SPIndicator.present(title: str, preset: .done)
-            }
         }
     }
 
@@ -180,11 +185,11 @@ extension ConnectionManager: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
         case .notConnected:
-            onDisconnectFrom?(peerID)
+            discoveryDelegate?.disconnectedFromPeer(.init(mcPeer: peerID))
         case .connecting:
             break
         case .connected:
-            onConnectTo?(peerID)
+            discoveryDelegate?.connectedToPeer(.init(mcPeer: peerID))
         @unknown default:
             break
         }
@@ -210,11 +215,11 @@ extension ConnectionManager: MCNearbyServiceAdvertiserDelegate {
 
 extension ConnectionManager: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String: String]?) {
-        addPeer?(peerID)
+        discoveryDelegate?.peerFound(.init(mcPeer: peerID))
     }
 
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        removePeer?(peerID)
+        discoveryDelegate?.peerLost(.init(mcPeer: peerID))
     }
 }
 

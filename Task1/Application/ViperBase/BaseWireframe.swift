@@ -1,6 +1,17 @@
 import UIKit
+import SPIndicator
 
-protocol WireframeInterface: AnyObject {}
+protocol WireframeInterface: AnyObject {
+    func showIndicator(withTitle title: String, message: String?, preset: SPIndicatorIconPreset)
+}
+
+extension WireframeInterface {
+    func showIndicator(withTitle title: String,
+                       message: String? = nil,
+                       preset: SPIndicatorIconPreset) {
+        SPIndicator.present(title: title, message: message, preset: preset)
+    }
+}
 
 class BaseWireframe<ViewController> where ViewController: UIViewController {
     private weak var _viewController: ViewController?

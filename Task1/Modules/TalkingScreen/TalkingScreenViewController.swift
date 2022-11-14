@@ -1,44 +1,27 @@
 //
-//  TalkieViewController.swift
+//  TalkingScreenViewController.swift
 //  Task1
 //
-//  Created by Игорь Клюжев on 09.11.2022.
+//  Created by Игорь Клюжев on 14.11.2022.
 //
 
 import UIKit
 import SnapKit
-import MultipeerConnectivity
 import Reusable
 import MapKit
 
-class TalkieViewController: UIViewController {
-    private let conn: ConnectionManager
-    private let peer: MCPeerID
+final class TalkingScreenViewController: UIViewController {
+	// swiftlint:disable:next implicitly_unwrapped_optional
+    var presenter: TalkingScreenPresenterInterface!
+    
+    private let conn = ConnectionManager.shared
+    private let peer: PeerModel
 
-    init(conn: ConnectionManager, peer: MCPeerID) {
-        self.conn = conn
+    init(peer: PeerModel) {
         self.peer = peer
         super.init(nibName: nil, bundle: nil)
 
-        conn.blockTalk = { title in
-            DispatchQueue.main.async {
-                self.talkButton.backgroundColor = .gray.withAlphaComponent(0.3)
-                self.talkButton.isUserInteractionEnabled = false
-                self.talkButton.setTitle(title, for: .normal)
-            }
-        }
-
-        conn.unblockTalk = {
-            DispatchQueue.main.async {
-                self.talkButton.backgroundColor = .blue.withAlphaComponent(0.5)
-                self.talkButton.isUserInteractionEnabled = true
-                self.talkButton.setTitle("Talk", for: .normal)
-            }
-        }
-
-        conn.addPoint = { location in
-            self.addPoint(with: location)
-        }
+        conn.sessionDelegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -143,17 +126,17 @@ class TalkieViewController: UIViewController {
         talkButton.backgroundColor = .blue.withAlphaComponent(0.5)
         talkButton.setTitle("Talk", for: .normal)
 
-        conn.stopStreamingVoice(to: peer)
+        conn.stopStreamingVoice(to: peer.mcPeer)
     }
 
     @objc
     private func sendOk() {
-        conn.sendMessage(mes: "OK", to: peer)
+        conn.sendMessage(mes: "OK", to: peer.mcPeer)
     }
 
     @objc
     private func sendLocation() {
-        conn.sendLocation(to: peer)
+        conn.sendLocation(to: peer.mcPeer)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -165,15 +148,45 @@ class TalkieViewController: UIViewController {
     func addPoint(with location: CLLocation) {
         DispatchQueue.main.async {
             let annotation = MKPointAnnotation()
-            annotation.title = self.peer.displayName
+            annotation.title = self.peer.name
             annotation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
                                                            longitude: location.coordinate.longitude)
             self.mapView.addAnnotation(annotation)
             self.mapView.showAnnotations([annotation], animated: true)
         }
     }
+
 }
 
-extension TalkieViewController: MKMapViewDelegate {
-    
+// MARK: - Extensions -
+
+extension TalkingScreenViewController: TalkingScreenViewInterface {
+}
+
+extension TalkingScreenViewController: MKMapViewDelegate {
+
+}
+
+extension TalkingScreenViewController: ConnectionManagerSessionDelegate {
+    func talkBlocked(withReason reason: TalkBlockReason) {
+        DispatchQueue.main.async {
+            self.talkButton.backgroundColor = .gray.withAlphaComponent(0.3)
+            self.talkButton.isUserInteractionEnabled = false
+            self.talkButton.setTitle(reason.rawValue, for: .normal)
+        }
+    }
+
+    func talkUnblocked() {
+        DispatchQueue.main.async {
+            self.talkButton.backgroundColor = .blue.withAlphaComponent(0.5)
+            self.talkButton.isUserInteractionEnabled = true
+            self.talkButton.setTitle("Talk", for: .normal)
+        }
+    }
+
+    func updatePeerLocation(with location: CLLocation) {
+        DispatchQueue.main.async {
+            self.addPoint(with: location)
+        }
+    }
 }

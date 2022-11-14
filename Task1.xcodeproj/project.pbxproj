@@ -8,18 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C2B328FEF60500E2FD55 /* AppDelegate.swift */; };
-		A529C2B828FEF60500E2FD55 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C2B728FEF60500E2FD55 /* ViewController.swift */; };
 		A529C2BD28FEF60600E2FD55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BC28FEF60600E2FD55 /* Assets.xcassets */; };
 		A529C2C028FEF60600E2FD55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BE28FEF60600E2FD55 /* LaunchScreen.storyboard */; };
-		A529C2FE28FEFE3300E2FD55 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C2FD28FEFE3300E2FD55 /* Assets.swift */; };
 		A529C30628FEFFA000E2FD55 /* BaseWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30228FEFFA000E2FD55 /* BaseWireframe.swift */; };
 		A529C30728FEFFA000E2FD55 /* ViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30328FEFFA000E2FD55 /* ViewInterface.swift */; };
-		A529C30828FEFFA000E2FD55 /* InteractorInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30428FEFFA000E2FD55 /* InteractorInterface.swift */; };
 		A529C30928FEFFA000E2FD55 /* PresenterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30528FEFFA000E2FD55 /* PresenterInterface.swift */; };
+		A551D0D82922958500241A76 /* TalkingScreenInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D42922958500241A76 /* TalkingScreenInterfaces.swift */; };
+		A551D0D92922958500241A76 /* TalkingScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D52922958500241A76 /* TalkingScreenPresenter.swift */; };
+		A551D0DA2922958500241A76 /* TalkingScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D62922958500241A76 /* TalkingScreenViewController.swift */; };
+		A551D0DB2922958500241A76 /* TalkingScreenWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D72922958500241A76 /* TalkingScreenWireframe.swift */; };
+		A551D0E0292295A100241A76 /* DiscoveryScreenInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DC292295A100241A76 /* DiscoveryScreenInterfaces.swift */; };
+		A551D0E1292295A100241A76 /* DiscoveryScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DD292295A100241A76 /* DiscoveryScreenPresenter.swift */; };
+		A551D0E2292295A100241A76 /* DiscoveryScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DE292295A100241A76 /* DiscoveryScreenViewController.swift */; };
+		A551D0E3292295A100241A76 /* DiscoveryScreenWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DF292295A100241A76 /* DiscoveryScreenWireframe.swift */; };
+		A551D0E62922A8B600241A76 /* PeerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0E52922A8B600241A76 /* PeerModel.swift */; };
+		A551D0E82922A91D00241A76 /* TalkBlockReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0E72922A91D00241A76 /* TalkBlockReason.swift */; };
+		A551D0EB2922D43B00241A76 /* PeerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0EA2922D43B00241A76 /* PeerCell.swift */; };
+		A551D0ED2922D45500241A76 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0EC2922D45500241A76 /* Section.swift */; };
 		A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */; };
 		A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC74291C0E2700253DB3 /* SnapKit */; };
 		A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC77291C167B00253DB3 /* Reusable */; };
-		A5F0DC7A291C1FF900253DB3 /* TalkieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC79291C1FF900253DB3 /* TalkieViewController.swift */; };
 		A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC7C291C252D00253DB3 /* SPIndicator */; };
 		A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */; };
 /* End PBXBuildFile section */
@@ -27,17 +35,25 @@
 /* Begin PBXFileReference section */
 		A529C2B028FEF60500E2FD55 /* Task1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A529C2B328FEF60500E2FD55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A529C2B728FEF60500E2FD55 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A529C2BC28FEF60600E2FD55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A529C2BF28FEF60600E2FD55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A529C2C128FEF60600E2FD55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A529C2FD28FEFE3300E2FD55 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		A529C30228FEFFA000E2FD55 /* BaseWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseWireframe.swift; sourceTree = "<group>"; };
 		A529C30328FEFFA000E2FD55 /* ViewInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewInterface.swift; sourceTree = "<group>"; };
-		A529C30428FEFFA000E2FD55 /* InteractorInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractorInterface.swift; sourceTree = "<group>"; };
 		A529C30528FEFFA000E2FD55 /* PresenterInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterInterface.swift; sourceTree = "<group>"; };
+		A551D0D42922958500241A76 /* TalkingScreenInterfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenInterfaces.swift; sourceTree = "<group>"; };
+		A551D0D52922958500241A76 /* TalkingScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenPresenter.swift; sourceTree = "<group>"; };
+		A551D0D62922958500241A76 /* TalkingScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenViewController.swift; sourceTree = "<group>"; };
+		A551D0D72922958500241A76 /* TalkingScreenWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenWireframe.swift; sourceTree = "<group>"; };
+		A551D0DC292295A100241A76 /* DiscoveryScreenInterfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenInterfaces.swift; sourceTree = "<group>"; };
+		A551D0DD292295A100241A76 /* DiscoveryScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenPresenter.swift; sourceTree = "<group>"; };
+		A551D0DE292295A100241A76 /* DiscoveryScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenViewController.swift; sourceTree = "<group>"; };
+		A551D0DF292295A100241A76 /* DiscoveryScreenWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenWireframe.swift; sourceTree = "<group>"; };
+		A551D0E52922A8B600241A76 /* PeerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerModel.swift; sourceTree = "<group>"; };
+		A551D0E72922A91D00241A76 /* TalkBlockReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkBlockReason.swift; sourceTree = "<group>"; };
+		A551D0EA2922D43B00241A76 /* PeerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerCell.swift; sourceTree = "<group>"; };
+		A551D0EC2922D45500241A76 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
-		A5F0DC79291C1FF900253DB3 /* TalkieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkieViewController.swift; sourceTree = "<group>"; };
 		A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,9 +111,9 @@
 		A529C2C928FEF96A00E2FD55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				A551D0D22922943100241A76 /* DiscoveryScreen */,
+				A551D0D32922955B00241A76 /* TalkingScreen */,
 				A5F0DC70291C0ADE00253DB3 /* Services */,
-				A529C2B728FEF60500E2FD55 /* ViewController.swift */,
-				A5F0DC79291C1FF900253DB3 /* TalkieViewController.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -105,29 +121,61 @@
 		A529C2CA28FEF96F00E2FD55 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A529C2FC28FEFE2500E2FD55 /* Generated */,
 				A529C2BC28FEF60600E2FD55 /* Assets.xcassets */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		A529C2FC28FEFE2500E2FD55 /* Generated */ = {
-			isa = PBXGroup;
-			children = (
-				A529C2FD28FEFE3300E2FD55 /* Assets.swift */,
-			);
-			path = Generated;
 			sourceTree = "<group>";
 		};
 		A529C30128FEFF7800E2FD55 /* ViperBase */ = {
 			isa = PBXGroup;
 			children = (
 				A529C30228FEFFA000E2FD55 /* BaseWireframe.swift */,
-				A529C30428FEFFA000E2FD55 /* InteractorInterface.swift */,
 				A529C30528FEFFA000E2FD55 /* PresenterInterface.swift */,
 				A529C30328FEFFA000E2FD55 /* ViewInterface.swift */,
 			);
 			path = ViperBase;
+			sourceTree = "<group>";
+		};
+		A551D0D22922943100241A76 /* DiscoveryScreen */ = {
+			isa = PBXGroup;
+			children = (
+				A551D0E92922D43000241A76 /* Cells */,
+				A551D0E42922A8A500241A76 /* Entities */,
+				A551D0DC292295A100241A76 /* DiscoveryScreenInterfaces.swift */,
+				A551D0DD292295A100241A76 /* DiscoveryScreenPresenter.swift */,
+				A551D0DE292295A100241A76 /* DiscoveryScreenViewController.swift */,
+				A551D0DF292295A100241A76 /* DiscoveryScreenWireframe.swift */,
+			);
+			path = DiscoveryScreen;
+			sourceTree = "<group>";
+		};
+		A551D0D32922955B00241A76 /* TalkingScreen */ = {
+			isa = PBXGroup;
+			children = (
+				A551D0D42922958500241A76 /* TalkingScreenInterfaces.swift */,
+				A551D0D52922958500241A76 /* TalkingScreenPresenter.swift */,
+				A551D0D62922958500241A76 /* TalkingScreenViewController.swift */,
+				A551D0D72922958500241A76 /* TalkingScreenWireframe.swift */,
+			);
+			path = TalkingScreen;
+			sourceTree = "<group>";
+		};
+		A551D0E42922A8A500241A76 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				A551D0E52922A8B600241A76 /* PeerModel.swift */,
+				A551D0E72922A91D00241A76 /* TalkBlockReason.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		A551D0E92922D43000241A76 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A551D0EA2922D43B00241A76 /* PeerCell.swift */,
+				A551D0EC2922D45500241A76 /* Section.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		A5F0DC70291C0ADE00253DB3 /* Services */ = {
@@ -220,16 +268,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A551D0E3292295A100241A76 /* DiscoveryScreenWireframe.swift in Sources */,
+				A551D0E1292295A100241A76 /* DiscoveryScreenPresenter.swift in Sources */,
 				A529C30628FEFFA000E2FD55 /* BaseWireframe.swift in Sources */,
-				A5F0DC7A291C1FF900253DB3 /* TalkieViewController.swift in Sources */,
-				A529C30828FEFFA000E2FD55 /* InteractorInterface.swift in Sources */,
-				A529C2B828FEF60500E2FD55 /* ViewController.swift in Sources */,
+				A551D0D82922958500241A76 /* TalkingScreenInterfaces.swift in Sources */,
 				A529C30928FEFFA000E2FD55 /* PresenterInterface.swift in Sources */,
 				A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */,
 				A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */,
+				A551D0DA2922958500241A76 /* TalkingScreenViewController.swift in Sources */,
 				A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */,
+				A551D0ED2922D45500241A76 /* Section.swift in Sources */,
+				A551D0D92922958500241A76 /* TalkingScreenPresenter.swift in Sources */,
+				A551D0E62922A8B600241A76 /* PeerModel.swift in Sources */,
+				A551D0DB2922958500241A76 /* TalkingScreenWireframe.swift in Sources */,
 				A529C30728FEFFA000E2FD55 /* ViewInterface.swift in Sources */,
-				A529C2FE28FEFE3300E2FD55 /* Assets.swift in Sources */,
+				A551D0EB2922D43B00241A76 /* PeerCell.swift in Sources */,
+				A551D0E2292295A100241A76 /* DiscoveryScreenViewController.swift in Sources */,
+				A551D0E0292295A100241A76 /* DiscoveryScreenInterfaces.swift in Sources */,
+				A551D0E82922A91D00241A76 /* TalkBlockReason.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
