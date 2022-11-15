@@ -42,15 +42,19 @@ class AudioStreamer {
         }
     }
 
+    private let audioQueue = DispatchQueue(label: "audioqueue")
+
     func startStreaming(sendData: @escaping (Data) -> Void) {
         self.sendData = sendData
         audioEngine?.inputNode.installTap(
             onBus: 0,
-            bufferSize: 48000 * 3,
+            bufferSize: 2048,
             format: audioFormat
         ) { buffer, _ in
-            let data = self.audioBufferToNSData(PCMBuffer: buffer)
-            self.sendData?(Data(referencing: data))
+            self.audioQueue.async {
+                let data = self.audioBufferToNSData(PCMBuffer: buffer)
+                self.sendData?(Data(referencing: data))
+            }
         }
     }
 
@@ -89,9 +93,6 @@ class AudioStreamer {
     }
 
     private func prepareSession() {
-        AudioOutputUnitStop((audioEngine?.inputNode.audioUnit)!)
-        AudioUnitUninitialize((audioEngine?.inputNode.audioUnit)!)
-
         do {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord)
             try AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker) // TODO: check if needed

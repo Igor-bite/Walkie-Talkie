@@ -144,7 +144,7 @@ extension TalkingScreenViewController: TalkingScreenViewInterface {
     func setTalkButtonState(_ state: TalkButtonState) {
         switch state {
         case .ready:
-            talkButton.backgroundColor = .gray.withAlphaComponent(0.5)
+            talkButton.backgroundColor = .blue.withAlphaComponent(0.5)
             talkButton.isUserInteractionEnabled = true
             talkButton.setTitle("Talk", for: .normal)
         case .blocked(let reason):
