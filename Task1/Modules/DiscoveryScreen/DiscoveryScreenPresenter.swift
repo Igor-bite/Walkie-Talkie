@@ -45,7 +45,7 @@ extension DiscoveryScreenPresenter: DiscoveryScreenPresenterInterface {
     func itemSelected(at indexPath: IndexPath) {
         let peer = peers[indexPath.row]
         connectionManager.connectTo(peer)
-        self.view.setAllowsSelection(false)
+        view.setAllowsSelection(false)
     }
 
     func advertiseButtonTapped() {
@@ -76,12 +76,12 @@ extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
             self.wireframe.showTalkingScreen(withPeer: peer)
             self.view.setAdvertiseButtonTitle("Host")
         }
-        self.connectionManager.stopAdvertising()
+        connectionManager.stopAdvertising()
     }
 
     func disconnectedFromPeer(_ peer: PeerModel) {
+        view.setAllowsSelection(true)
         DispatchQueue.main.async {
-            self.view.setAllowsSelection(true)
             self.wireframe.showIndicator(withTitle: "Connection declined", message: nil, preset: .error)
             self.wireframe.dismissTalkingScreen()
         }

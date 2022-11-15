@@ -13,20 +13,6 @@ import MapKit
 final class TalkingScreenViewController: UIViewController {
 	// swiftlint:disable:next implicitly_unwrapped_optional
     var presenter: TalkingScreenPresenterInterface!
-    
-    private let conn = ConnectionManager.shared
-    private let peer: PeerModel
-
-    init(peer: PeerModel) {
-        self.peer = peer
-        super.init(nibName: nil, bundle: nil)
-
-        conn.sessionDelegate = self
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     private lazy var mapView = {
         let map = MKMapView()
@@ -115,78 +101,58 @@ final class TalkingScreenViewController: UIViewController {
 
     @objc
     private func talk() {
-        talkButton.backgroundColor = .blue.withAlphaComponent(0.3)
-        talkButton.setTitle("Recording", for: .normal)
-
-        conn.startStreamingVoice(to: peer)
+        presenter.talkButtonTouchesBegan()
     }
 
     @objc
     private func end() {
-        talkButton.backgroundColor = .blue.withAlphaComponent(0.5)
-        talkButton.setTitle("Talk", for: .normal)
-
-        conn.stopStreamingVoice(to: peer.mcPeer)
+        presenter.talkButtonTouchesEnded()
     }
 
     @objc
     private func sendOk() {
-        conn.sendMessage(mes: "OK", to: peer.mcPeer)
+        presenter.sendOkTapped()
     }
 
     @objc
     private func sendLocation() {
-        conn.sendLocation(to: peer.mcPeer)
+        presenter.sendLocationTapped()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        conn.disconnect()
+        presenter.viewDidAppear()
     }
+}
 
-    func addPoint(with location: CLLocation) {
-        DispatchQueue.main.async {
-            let annotation = MKPointAnnotation()
-            annotation.title = self.peer.name
-            annotation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
-                                                           longitude: location.coordinate.longitude)
-            self.mapView.addAnnotation(annotation)
-            self.mapView.showAnnotations([annotation], animated: true)
-        }
-    }
-
+enum TalkButtonState {
+    case ready
+    case blocked(reason: TalkBlockReason)
 }
 
 // MARK: - Extensions -
 
 extension TalkingScreenViewController: TalkingScreenViewInterface {
-}
-
-extension TalkingScreenViewController: MKMapViewDelegate {
-
-}
-
-extension TalkingScreenViewController: ConnectionManagerSessionDelegate {
-    func talkBlocked(withReason reason: TalkBlockReason) {
-        DispatchQueue.main.async {
-            self.talkButton.backgroundColor = .gray.withAlphaComponent(0.3)
-            self.talkButton.isUserInteractionEnabled = false
-            self.talkButton.setTitle(reason.rawValue, for: .normal)
+    func showAnnotation(_ annotation: MKPointAnnotation) {
+        if mapView.view(for: annotation) == nil {
+            mapView.addAnnotation(annotation)
         }
+        mapView.showAnnotations([annotation], animated: true)
     }
 
-    func talkUnblocked() {
-        DispatchQueue.main.async {
-            self.talkButton.backgroundColor = .blue.withAlphaComponent(0.5)
-            self.talkButton.isUserInteractionEnabled = true
-            self.talkButton.setTitle("Talk", for: .normal)
-        }
-    }
-
-    func updatePeerLocation(with location: CLLocation) {
-        DispatchQueue.main.async {
-            self.addPoint(with: location)
+    func setTalkButtonState(_ state: TalkButtonState) {
+        switch state {
+        case .ready:
+            talkButton.backgroundColor = .gray.withAlphaComponent(0.5)
+            talkButton.isUserInteractionEnabled = true
+            talkButton.setTitle("Talk", for: .normal)
+        case .blocked(let reason):
+            talkButton.backgroundColor = .gray.withAlphaComponent(0.3)
+            talkButton.isUserInteractionEnabled = reason == .recording
+            talkButton.setTitle(reason.rawValue, for: .normal)
         }
     }
 }
+
+extension TalkingScreenViewController: MKMapViewDelegate {}

@@ -116,9 +116,9 @@ final class ConnectionManager: NSObject {
         }
     }
 
-    func stopStreamingVoice(to peer: MCPeerID) {
+    func stopStreamingVoice(to peer: PeerModel) {
         audioEngine.stopStreaming()
-        sendMessage(mes: SendFlags.Voice.end, to: peer)
+        sendMessage(mes: SendFlags.Voice.end, to: peer.mcPeer)
     }
 
     func sendLocation(to peer: MCPeerID) {

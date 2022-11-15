@@ -9,4 +9,5 @@ import Foundation
 
 enum TalkBlockReason: String {
     case receiving = "Receiving"
+    case recording = "Recording"
 }

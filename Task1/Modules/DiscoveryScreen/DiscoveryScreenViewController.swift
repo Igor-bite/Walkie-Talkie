@@ -18,7 +18,7 @@ final class DiscoveryScreenViewController: UIViewController {
         button.backgroundColor = .blue
         button.layer.cornerRadius = 10
         button.setTitle("Host", for: .normal)
-        button.addTarget(self, action: #selector(advertise), for: .touchUpInside)
+        button.addTarget(self, action: #selector(advertiseTapped), for: .touchUpInside)
         return button
     }()
 
@@ -70,7 +70,7 @@ final class DiscoveryScreenViewController: UIViewController {
     }
 
     @objc
-    private func advertise() {
+    private func advertiseTapped() {
         presenter.advertiseButtonTapped()
     }
 }

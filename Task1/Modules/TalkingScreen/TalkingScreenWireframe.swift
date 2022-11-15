@@ -11,10 +11,10 @@ import MultipeerConnectivity
 final class TalkingScreenWireframe: BaseWireframe<TalkingScreenViewController> {
 
     init(peer: PeerModel) {
-        let moduleViewController = TalkingScreenViewController(peer: peer)
+        let moduleViewController = TalkingScreenViewController()
         super.init(viewController: moduleViewController)
 
-        let presenter = TalkingScreenPresenter(view: moduleViewController, wireframe: self)
+        let presenter = TalkingScreenPresenter(view: moduleViewController, wireframe: self, peer: peer)
         moduleViewController.presenter = presenter
     }
 
