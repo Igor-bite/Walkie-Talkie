@@ -21,10 +21,10 @@ protocol ConnectionManagerDiscoveryDelegate: AnyObject {
 protocol ConnectionManagerSessionDelegate: AnyObject {
     func talkBlocked(withReason reason: TalkBlockReason)
     func talkUnblocked()
-    func updatePeerLocation(with location: CLLocation, distance: Int?)
+    func updatePeerLocation(with location: CLLocation)
 }
 
-final class ConnectionManager {
+final class ConnectionManager: NSObject {
     private enum SendFlags {
         enum Voice {
             static let start = "&voice_start"
@@ -36,6 +36,8 @@ final class ConnectionManager {
             static let flag = "&location" // &location_lat=54.3442354_lon=32.344424
         }
     }
+    static let shared = ConnectionManager()
+
     private static let service = "walkie-talkie"
     static let peerNameKey = "PeerNameKey"
 
@@ -43,22 +45,10 @@ final class ConnectionManager {
     private var advertiserAssistant: MCNearbyServiceAdvertiser?
     private var nearbyServiceBrowser: MCNearbyServiceBrowser?
     private var session: MCSession?
-    private lazy var locationManager: CLLocationManager = {
-        let locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        return locationManager
-    }()
-    private var location: CLLocation?
-
-    private var peerToSendLocation: MCPeerID?
-
     weak var discoveryDelegate: ConnectionManagerDiscoveryDelegate?
     weak var sessionDelegate: ConnectionManagerSessionDelegate?
 
     private let audioEngine = AudioStreamer()
-
-    static let shared = ConnectionManager()
 
     private var isAdvertising = false
     private var isBrowsing = false
@@ -173,14 +163,15 @@ final class ConnectionManager {
         sendMessage(mes: SendFlags.Voice.end, to: peer.mcPeer)
     }
 
-    func sendLocation(to peer: MCPeerID) {
-        peerToSendLocation = peer
-        requestLocationAccess()
-        locationManager.requestLocation()
-    }
+    func sendLocation(_ location: CLLocation?, to peer: MCPeerID) {
+        guard let location = location else { return }
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
 
-    private func requestLocationAccess() {
-        locationManager.requestWhenInUseAuthorization()
+        let encoded = "\(SendFlags.Location.flag)_lat=\(latitude)_lon=\(longitude)"
+        if let data = encoded.data(using: .utf8) {
+            try? session?.send(data, toPeers: [peer], with: .reliable)
+        }
     }
 }
 
@@ -202,13 +193,7 @@ extension ConnectionManager: MCSessionDelegate {
                         if let lat = Double(components[1].split(separator: "=")[1]),
                            let lon = Double(components[2].split(separator: "=")[1])
                         {
-                            let peerLocation = CLLocation(latitude: lat, longitude: lon)
-                            if let location = self.location {
-                                let distanceInMeters = peerLocation.distance(from: location)
-                                sessionDelegate?.updatePeerLocation(with: peerLocation, distance: Int(distanceInMeters))
-                            } else {
-                                sessionDelegate?.updatePeerLocation(with: peerLocation, distance: nil)
-                            }
+                            sessionDelegate?.updatePeerLocation(with: CLLocation(latitude: lat, longitude: lon))
                         }
                     }
                 }
@@ -268,36 +253,5 @@ extension ConnectionManager: MCNearbyServiceBrowserDelegate {
 
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         discoveryDelegate?.peerLost(.init(mcPeer: peerID))
-    }
-}
-
-extension ConnectionManager: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        let status = CLLocationManager.authorizationStatus()
-        switch status {
-        case .authorizedAlways, .authorizedWhenInUse:
-            sendLocation(to: peerToSendLocation!)
-        default:
-            break
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            self.location = location
-            let latitude = location.coordinate.latitude
-            let longitude = location.coordinate.longitude
-
-            let encoded = "\(SendFlags.Location.flag)_lat=\(latitude)_lon=\(longitude)"
-            if let data = encoded.data(using: .utf8),
-               let peer = peerToSendLocation
-            {
-                try? session?.send(data, toPeers: [peer], with: .reliable)
-            }
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        SPIndicator.present(title: error.localizedDescription, haptic: .error)
     }
 }

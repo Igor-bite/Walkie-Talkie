@@ -18,6 +18,8 @@ final class TalkingScreenPresenter {
     private unowned let view: TalkingScreenViewInterface
     private let wireframe: TalkingScreenWireframeInterface
     private let connectionManager = ConnectionManager.shared
+    private let locationManager = LocationManager()
+    
     private let peer: PeerModel
     private lazy var peerLocationAnnotation = {
         let annotation = MKPointAnnotation()
@@ -34,8 +36,17 @@ final class TalkingScreenPresenter {
         self.wireframe = wireframe
         self.peer = peer
         connectionManager.sessionDelegate = self
-        connectionManager.sendLocation(to: peer.mcPeer)
         view.setPeerName(peer.name)
+        locationManager.locationUpdated = { location in
+            let peerLocation = CLLocation(latitude: self.peerLocationAnnotation.coordinate.latitude,
+                                          longitude: self.peerLocationAnnotation.coordinate.longitude)
+            let distance = Int(peerLocation.distance(from: location))
+            DispatchQueue.main.async {
+                self.view.setPeerDistance(distance)
+            }
+        }
+        locationManager.startUpdatingLocation()
+        connectionManager.sendLocation(locationManager.currentLocation, to: peer.mcPeer)
     }
 }
 
@@ -59,7 +70,7 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
     }
 
     func sendLocationTapped() {
-        connectionManager.sendLocation(to: peer.mcPeer)
+        connectionManager.sendLocation(locationManager.currentLocation, to: peer.mcPeer)
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
         view.setLocationButtonHintVisibility(true, animated: true)
     }
@@ -87,9 +98,14 @@ extension TalkingScreenPresenter: ConnectionManagerSessionDelegate {
         }
     }
 
-    func updatePeerLocation(with location: CLLocation, distance: Int?) {
+    func updatePeerLocation(with location: CLLocation) {
         peerLocationAnnotation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
                                                                    longitude: location.coordinate.longitude)
+        var distance: Int? = nil
+        if let userLocation = locationManager.currentLocation {
+            distance = Int(location.distance(from: userLocation))
+        }
+
         DispatchQueue.main.async {
             self.view.showAnnotation(self.peerLocationAnnotation)
             self.view.setPeerDistance(distance)

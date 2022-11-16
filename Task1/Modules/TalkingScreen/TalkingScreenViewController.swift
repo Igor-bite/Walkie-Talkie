@@ -65,7 +65,7 @@ final class TalkingScreenViewController: UIViewController {
     private lazy var sendOkButtonHint = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 15)
-        label.textColor = .blue.withAlphaComponent(0.5)
+        label.textColor = .blue.withAlphaComponent(0.4)
         label.textAlignment = .right
         label.text = "Send OK"
         return label
@@ -85,7 +85,7 @@ final class TalkingScreenViewController: UIViewController {
     private lazy var sendLocationButtonHint = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 15)
-        label.textColor = .blue.withAlphaComponent(0.5)
+        label.textColor = .blue.withAlphaComponent(0.4)
         label.textAlignment = .left
         label.text = "Send location"
         return label
@@ -142,12 +142,13 @@ final class TalkingScreenViewController: UIViewController {
         }
 
         sendOkButtonHint.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(3)
+            make.right.lessThanOrEqualToSuperview().inset(3)
             make.bottom.equalToSuperview().inset(3)
+            make.centerX.equalTo(sendOkButton).priority(.medium)
         }
 
         sendLocationButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
+            make.left.greaterThanOrEqualToSuperview().offset(20)
             make.bottom.equalToSuperview().inset(20)
             make.width.height.equalTo(60)
         }
@@ -155,6 +156,7 @@ final class TalkingScreenViewController: UIViewController {
         sendLocationButtonHint.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(3)
             make.bottom.equalToSuperview().inset(3)
+            make.centerX.equalTo(sendLocationButton).priority(.medium)
         }
     }
 
@@ -230,15 +232,15 @@ extension TalkingScreenViewController: TalkingScreenViewInterface {
     }
 
     func setLocationButtonHintVisibility(_ isHidden: Bool, animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
-            self.sendLocationButtonHint.alpha = isHidden ? 0 : 1
-        }
+//        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
+//            self.sendLocationButtonHint.alpha = isHidden ? 0 : 1
+//        }
     }
 
     func setOkButtonHintVisibility(_ isHidden: Bool, animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
-            self.sendOkButtonHint.alpha = isHidden ? 0 : 1
-        }
+//        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
+//            self.sendOkButtonHint.alpha = isHidden ? 0 : 1
+//        }
     }
 }
 
