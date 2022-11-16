@@ -26,6 +26,9 @@ final class TalkingScreenPresenter {
         annotation.title = self.peer.name
         return annotation
     }()
+    private var shouldSendLocationOnNextUpdate = false
+    private var locationDateUpdateTimer: Timer?
+    private var peerLocationUpdateDate: Date?
 
     init(
         view: TalkingScreenViewInterface,
@@ -37,7 +40,12 @@ final class TalkingScreenPresenter {
         self.peer = peer
         connectionManager.sessionDelegate = self
         view.setPeerName(peer.name)
-        locationManager.locationUpdated = { location in
+        locationManager.locationUpdated = { [weak self] location in
+            guard let self = self else { return }
+            if self.shouldSendLocationOnNextUpdate {
+                self.shouldSendLocationOnNextUpdate = false
+                self.connectionManager.sendLocation(location, to: peer)
+            }
             let peerLocation = CLLocation(latitude: self.peerLocationAnnotation.coordinate.latitude,
                                           longitude: self.peerLocationAnnotation.coordinate.longitude)
             let distance = Int(peerLocation.distance(from: location))
@@ -45,8 +53,39 @@ final class TalkingScreenPresenter {
                 self.view.setPeerDistance(distance)
             }
         }
+        shouldSendLocationOnNextUpdate = true
         locationManager.startUpdatingLocation()
-        connectionManager.sendLocation(locationManager.currentLocation, to: peer.mcPeer)
+        createTimerForDateUpdate()
+    }
+
+    deinit {
+        locationDateUpdateTimer?.invalidate()
+    }
+
+    private func createTimerForDateUpdate() {
+        locationDateUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            self.updateLocationUpdateDate()
+        }
+        locationDateUpdateTimer?.tolerance = 0.1
+    }
+
+    @objc
+    private func updateLocationUpdateDate() {
+        let now = Date()
+        guard let peerLocationUpdateDate = self.peerLocationUpdateDate,
+              now.timeIntervalSince(peerLocationUpdateDate) >= 1
+        else { return }
+
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .short
+        formatter.dateTimeStyle = .numeric
+        formatter.locale = .init(identifier: "en_US")
+        let relative = formatter.localizedString(for: peerLocationUpdateDate, relativeTo: now)
+
+        DispatchQueue.main.async {
+            self.view.setLocationUpdateDate(with: "Updated \(relative)")
+        }
     }
 }
 
@@ -64,13 +103,13 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
     }
 
     func sendOkTapped() {
-        connectionManager.sendMessage(mes: "OK", to: peer.mcPeer)
+        connectionManager.sendMessage(mes: "OK", to: peer)
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendOkHintHidden)
         view.setOkButtonHintVisibility(true, animated: true)
     }
 
     func sendLocationTapped() {
-        connectionManager.sendLocation(locationManager.currentLocation, to: peer.mcPeer)
+        connectionManager.sendLocation(locationManager.currentLocation, to: peer)
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
         view.setLocationButtonHintVisibility(true, animated: true)
     }
@@ -99,6 +138,7 @@ extension TalkingScreenPresenter: ConnectionManagerSessionDelegate {
     }
 
     func updatePeerLocation(with location: CLLocation) {
+        peerLocationUpdateDate = Date()
         peerLocationAnnotation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
                                                                    longitude: location.coordinate.longitude)
         var distance: Int? = nil

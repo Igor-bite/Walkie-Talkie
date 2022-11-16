@@ -131,9 +131,9 @@ final class ConnectionManager: NSObject {
         nearbyServiceBrowser?.invitePeer(peer.mcPeer, to: session, withContext: nil, timeout: 5)
     }
 
-    func sendMessage(mes: String, to peer: MCPeerID) {
+    func sendMessage(mes: String, to peer: PeerModel) {
         do {
-            try session?.send(mes.data(using: .utf8)!, toPeers: [peer], with: .reliable)
+            try session?.send(mes.data(using: .utf8)!, toPeers: [peer.mcPeer], with: .reliable)
         } catch {
             DispatchQueue.main.async {
                 SPIndicator.present(title: error.localizedDescription, preset: .error)
@@ -146,7 +146,7 @@ final class ConnectionManager: NSObject {
     }
 
     func startStreamingVoice(to peer: PeerModel) {
-        sendMessage(mes: SendFlags.Voice.start, to: peer.mcPeer)
+        sendMessage(mes: SendFlags.Voice.start, to: peer)
         audioEngine.startStreaming { data in
             do {
                 try self.session?.send(data, toPeers: [peer.mcPeer], with: .reliable)
@@ -160,17 +160,17 @@ final class ConnectionManager: NSObject {
 
     func stopStreamingVoice(to peer: PeerModel) {
         audioEngine.stopStreaming()
-        sendMessage(mes: SendFlags.Voice.end, to: peer.mcPeer)
+        sendMessage(mes: SendFlags.Voice.end, to: peer)
     }
 
-    func sendLocation(_ location: CLLocation?, to peer: MCPeerID) {
+    func sendLocation(_ location: CLLocation?, to peer: PeerModel) {
         guard let location = location else { return }
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
 
         let encoded = "\(SendFlags.Location.flag)_lat=\(latitude)_lon=\(longitude)"
         if let data = encoded.data(using: .utf8) {
-            try? session?.send(data, toPeers: [peer], with: .reliable)
+            try? session?.send(data, toPeers: [peer.mcPeer], with: .reliable)
         }
     }
 }

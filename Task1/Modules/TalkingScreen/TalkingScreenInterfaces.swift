@@ -13,6 +13,7 @@ protocol TalkingScreenWireframeInterface: WireframeInterface {}
 
 protocol TalkingScreenViewInterface: ViewInterface {
     func showAnnotation(_ annotation: MKPointAnnotation)
+    func setLocationUpdateDate(with text: String)
     func setTalkButtonState(_ state: TalkButtonState)
     func setPeerName(_ name: String)
     func setPeerDistance(_ distance: Int?)

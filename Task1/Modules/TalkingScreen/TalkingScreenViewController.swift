@@ -37,6 +37,14 @@ final class TalkingScreenViewController: UIViewController {
         return map
     }()
 
+    private lazy var locationUpdateDate = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 17)
+        label.textColor = .gray.withAlphaComponent(0.4)
+        label.textAlignment = .center
+        return label
+    }()
+
     private lazy var talkButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .blue.withAlphaComponent(0.5)
@@ -104,6 +112,7 @@ final class TalkingScreenViewController: UIViewController {
         view.addSubview(connectedPeerLabel)
         view.addSubview(distanceToPeerLabel)
         view.addSubview(mapView)
+        view.addSubview(locationUpdateDate)
         view.addSubview(talkButton)
         view.addSubview(sendOkButton)
         view.addSubview(sendOkButtonHint)
@@ -123,9 +132,15 @@ final class TalkingScreenViewController: UIViewController {
 
         mapView.snp.makeConstraints { make in
             make.top.equalTo(connectedPeerLabel.snp.bottom).offset(10)
-            make.bottom.equalTo(talkButton.snp.top).offset(-20)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().inset(20)
+            make.bottom.equalTo(locationUpdateDate.snp.top).offset(-5)
+        }
+
+        locationUpdateDate.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().inset(10)
+            make.bottom.equalTo(talkButton.snp.top).offset(-15)
         }
 
         talkButton.snp.makeConstraints { make in
@@ -202,6 +217,12 @@ extension TalkingScreenViewController: TalkingScreenViewInterface {
         mapView.showAnnotations([annotation], animated: true)
     }
 
+    func setLocationUpdateDate(with text: String) {
+        UIView.animate(withDuration: 0.3, delay: 0) {
+            self.locationUpdateDate.text = text
+        }
+    }
+
     func setTalkButtonState(_ state: TalkButtonState) {
         switch state {
         case .ready:
@@ -232,15 +253,15 @@ extension TalkingScreenViewController: TalkingScreenViewInterface {
     }
 
     func setLocationButtonHintVisibility(_ isHidden: Bool, animated: Bool) {
-//        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
-//            self.sendLocationButtonHint.alpha = isHidden ? 0 : 1
-//        }
+        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
+            self.sendLocationButtonHint.alpha = isHidden ? 0 : 1
+        }
     }
 
     func setOkButtonHintVisibility(_ isHidden: Bool, animated: Bool) {
-//        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
-//            self.sendOkButtonHint.alpha = isHidden ? 0 : 1
-//        }
+        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
+            self.sendOkButtonHint.alpha = isHidden ? 0 : 1
+        }
     }
 }
 

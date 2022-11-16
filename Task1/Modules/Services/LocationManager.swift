@@ -57,6 +57,6 @@ extension LocationManager: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        SPIndicator.present(title: error.localizedDescription, preset: .error)
+        print("Error occured: \(error.localizedDescription)")
     }
 }
