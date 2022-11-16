@@ -14,4 +14,8 @@ struct PeerModel: Hashable {
     var name: String {
         mcPeer.displayName
     }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(mcPeer)
+    }
 }

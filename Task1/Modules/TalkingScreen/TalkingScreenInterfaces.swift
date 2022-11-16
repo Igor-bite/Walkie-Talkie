@@ -14,6 +14,10 @@ protocol TalkingScreenWireframeInterface: WireframeInterface {}
 protocol TalkingScreenViewInterface: ViewInterface {
     func showAnnotation(_ annotation: MKPointAnnotation)
     func setTalkButtonState(_ state: TalkButtonState)
+    func setPeerName(_ name: String)
+    func setPeerDistance(_ distance: Int?)
+    func setLocationButtonHintVisibility(_ isHidden: Bool, animated: Bool)
+    func setOkButtonHintVisibility(_ isHidden: Bool, animated: Bool)
 }
 
 protocol TalkingScreenPresenterInterface: PresenterInterface {
@@ -22,4 +26,5 @@ protocol TalkingScreenPresenterInterface: PresenterInterface {
     func sendOkTapped()
     func sendLocationTapped()
     func viewDidAppear()
+    func updateHintsVisibility()
 }

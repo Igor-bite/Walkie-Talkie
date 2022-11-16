@@ -10,6 +10,10 @@ import CoreLocation
 import MapKit
 
 final class TalkingScreenPresenter {
+    private enum HintShowedKeys {
+        static let sendOkHintHidden = "sendOkHintShowed"
+        static let sendLocationHintHidden = "sendLocationHintShowed"
+    }
 
     private unowned let view: TalkingScreenViewInterface
     private let wireframe: TalkingScreenWireframeInterface
@@ -30,6 +34,8 @@ final class TalkingScreenPresenter {
         self.wireframe = wireframe
         self.peer = peer
         connectionManager.sessionDelegate = self
+        connectionManager.sendLocation(to: peer.mcPeer)
+        view.setPeerName(peer.name)
     }
 }
 
@@ -48,14 +54,23 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
 
     func sendOkTapped() {
         connectionManager.sendMessage(mes: "OK", to: peer.mcPeer)
+        UserDefaults.standard.set(true, forKey: HintShowedKeys.sendOkHintHidden)
+        view.setOkButtonHintVisibility(true, animated: true)
     }
 
     func sendLocationTapped() {
         connectionManager.sendLocation(to: peer.mcPeer)
+        UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
+        view.setLocationButtonHintVisibility(true, animated: true)
     }
 
     func viewDidAppear() {
         connectionManager.disconnect()
+    }
+
+    func updateHintsVisibility() {
+        view.setOkButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendOkHintHidden), animated: false)
+        view.setLocationButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendLocationHintHidden), animated: false)
     }
 }
 
@@ -72,11 +87,12 @@ extension TalkingScreenPresenter: ConnectionManagerSessionDelegate {
         }
     }
 
-    func updatePeerLocation(with location: CLLocation) {
+    func updatePeerLocation(with location: CLLocation, distance: Int?) {
         peerLocationAnnotation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
                                                                    longitude: location.coordinate.longitude)
         DispatchQueue.main.async {
             self.view.showAnnotation(self.peerLocationAnnotation)
+            self.view.setPeerDistance(distance)
         }
     }
 }

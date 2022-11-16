@@ -27,4 +27,5 @@ protocol DiscoveryScreenPresenterInterface: PresenterInterface {
 
     func itemSelected(at indexPath: IndexPath)
     func advertiseButtonTapped()
+    func changePeerName(to name: String)
 }

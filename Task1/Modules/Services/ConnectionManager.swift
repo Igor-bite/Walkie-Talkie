@@ -21,7 +21,7 @@ protocol ConnectionManagerDiscoveryDelegate: AnyObject {
 protocol ConnectionManagerSessionDelegate: AnyObject {
     func talkBlocked(withReason reason: TalkBlockReason)
     func talkUnblocked()
-    func updatePeerLocation(with location: CLLocation)
+    func updatePeerLocation(with location: CLLocation, distance: Int?)
 }
 
 final class ConnectionManager: NSObject {
@@ -37,8 +37,9 @@ final class ConnectionManager: NSObject {
         }
     }
     private static let service = "walkie-talkie"
+    static let peerNameKey = "PeerNameKey"
 
-    private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
+    private var myPeerId = MCPeerID(displayName: UserDefaults.standard.string(forKey: ConnectionManager.peerNameKey) ?? UIDevice.current.name)
     private var advertiserAssistant: MCNearbyServiceAdvertiser?
     private var nearbyServiceBrowser: MCNearbyServiceBrowser?
     private var session: MCSession?
@@ -59,29 +60,79 @@ final class ConnectionManager: NSObject {
 
     static let shared = ConnectionManager()
 
+    private var isAdvertising = false
+    private var isBrowsing = false
+
     private override init() {
         super.init()
         session = .init(peer: myPeerId, securityIdentity: nil, encryptionPreference: .required)
         session?.delegate = self
-    }
 
-    func startAdvertising() {
         advertiserAssistant = MCNearbyServiceAdvertiser(
             peer: myPeerId,
             discoveryInfo: nil,
-            serviceType: ConnectionManager.service)
+            serviceType: ConnectionManager.service
+        )
         advertiserAssistant?.delegate = self
+
+        nearbyServiceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: ConnectionManager.service)
+        nearbyServiceBrowser?.delegate = self
+    }
+
+    func startAdvertising() {
         advertiserAssistant?.startAdvertisingPeer()
+        isAdvertising = true
     }
 
     func stopAdvertising() {
         advertiserAssistant?.stopAdvertisingPeer()
+        isAdvertising = false
     }
 
-    func showAdvertisers() {
+    func startBrowsingForPeers() {
+        nearbyServiceBrowser?.startBrowsingForPeers()
+        isBrowsing = true
+    }
+
+    func stopBrowsingForPeers() {
+        nearbyServiceBrowser?.stopBrowsingForPeers()
+        isBrowsing = false
+    }
+
+    func changePeerName(to name: String) {
+        if name == UIDevice.current.name {
+            UserDefaults.standard.removeObject(forKey: ConnectionManager.peerNameKey)
+        } else {
+            UserDefaults.standard.set(name, forKey: ConnectionManager.peerNameKey)
+        }
+
+        session?.disconnect()
+        nearbyServiceBrowser?.stopBrowsingForPeers()
+        advertiserAssistant?.stopAdvertisingPeer()
+        session = nil
+        nearbyServiceBrowser = nil
+        advertiserAssistant = nil
+
+        myPeerId = .init(displayName: name)
+
+        session = .init(peer: myPeerId, securityIdentity: nil, encryptionPreference: .required)
+        session?.delegate = self
+
         nearbyServiceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: ConnectionManager.service)
         nearbyServiceBrowser?.delegate = self
-        nearbyServiceBrowser?.startBrowsingForPeers()
+        if isBrowsing {
+            startBrowsingForPeers()
+        }
+
+        advertiserAssistant = MCNearbyServiceAdvertiser(
+            peer: myPeerId,
+            discoveryInfo: nil,
+            serviceType: ConnectionManager.service
+        )
+        advertiserAssistant?.delegate = self
+        if isAdvertising {
+            startAdvertising()
+        }
     }
 
     func connectTo(_ peer: PeerModel) {
@@ -152,15 +203,13 @@ extension ConnectionManager: MCSessionDelegate {
                         if let lat = Double(components[1].split(separator: "=")[1]),
                            let lon = Double(components[2].split(separator: "=")[1])
                         {
+                            let peerLocation = CLLocation(latitude: lat, longitude: lon)
                             if let location = self.location {
-                                let anotherLocation = CLLocation(latitude: lat, longitude: lon)
-
-                                let distanceInMeters = location.distance(from: anotherLocation)
-                                print("Distance: \(distanceInMeters)")
-
-                                sessionDelegate?.updatePeerLocation(with: anotherLocation)
+                                let distanceInMeters = peerLocation.distance(from: location)
+                                sessionDelegate?.updatePeerLocation(with: peerLocation, distance: Int(distanceInMeters))
+                            } else {
+                                sessionDelegate?.updatePeerLocation(with: peerLocation, distance: nil)
                             }
-                            print("Got location: lat = \(lat), lon = \(lon)")
                         }
                     }
                 }

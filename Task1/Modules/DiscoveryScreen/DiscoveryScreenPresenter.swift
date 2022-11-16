@@ -28,7 +28,7 @@ final class DiscoveryScreenPresenter {
         self.wireframe = wireframe
 
         connectionManager.discoveryDelegate = self
-        connectionManager.showAdvertisers()
+        connectionManager.startBrowsingForPeers()
     }
 
     private func applySnapshot(animatingDifferences: Bool = true) {
@@ -45,18 +45,24 @@ extension DiscoveryScreenPresenter: DiscoveryScreenPresenterInterface {
     func itemSelected(at indexPath: IndexPath) {
         let peer = peers[indexPath.row]
         connectionManager.connectTo(peer)
-        view.setAllowsSelection(false)
+        DispatchQueue.main.async {
+            self.view.setAllowsSelection(false)
+        }
     }
 
     func advertiseButtonTapped() {
         if isAdvertising {
-            view.setAdvertiseButtonTitle("Host")
+            view.setAdvertiseButtonTitle("Advertise")
             connectionManager.stopAdvertising()
         } else {
-            view.setAdvertiseButtonTitle("Unhost")
+            view.setAdvertiseButtonTitle("Stop advertising")
             connectionManager.startAdvertising()
         }
         isAdvertising.toggle()
+    }
+
+    func changePeerName(to name: String) {
+        connectionManager.changePeerName(to: name)
     }
 }
 
@@ -74,14 +80,14 @@ extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
     func connectedToPeer(_ peer: PeerModel) {
         DispatchQueue.main.async {
             self.wireframe.showTalkingScreen(withPeer: peer)
-            self.view.setAdvertiseButtonTitle("Host")
+            self.view.setAdvertiseButtonTitle("Advertise")
         }
         connectionManager.stopAdvertising()
     }
 
     func disconnectedFromPeer(_ peer: PeerModel) {
-        view.setAllowsSelection(true)
         DispatchQueue.main.async {
+            self.view.setAllowsSelection(true)
             self.wireframe.showIndicator(withTitle: "Connection declined", message: nil, preset: .error)
             self.wireframe.dismissTalkingScreen()
         }

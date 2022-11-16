@@ -13,11 +13,19 @@ final class DiscoveryScreenViewController: UIViewController {
 	// swiftlint:disable:next implicitly_unwrapped_optional
     var presenter: DiscoveryScreenPresenterInterface!
 
+    private lazy var nameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = UIDevice.current.name
+        textField.text = UserDefaults.standard.string(forKey: ConnectionManager.peerNameKey)
+        textField.addTarget(self, action: #selector(peerNameChanged), for: .editingChanged)
+        return textField
+    }()
+
     private lazy var advertiseButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .blue
+        button.backgroundColor = .blue.withAlphaComponent(0.5)
         button.layer.cornerRadius = 10
-        button.setTitle("Host", for: .normal)
+        button.setTitle("Advertise", for: .normal)
         button.addTarget(self, action: #selector(advertiseTapped), for: .touchUpInside)
         return button
     }()
@@ -49,18 +57,27 @@ final class DiscoveryScreenViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .white
+        title = "Discovery"
         setup()
     }
 
     private func setup() {
+        view.addSubview(nameTextField)
         view.addSubview(advertiseButton)
         view.addSubview(peersCollectionView)
 
-        advertiseButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(50)
+        nameTextField.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(15)
             make.height.equalTo(50)
-            make.width.equalTo(100)
+            make.left.equalToSuperview().offset(15)
+            make.right.equalToSuperview().inset(15)
+        }
+
+        advertiseButton.snp.makeConstraints { make in
+            make.top.equalTo(nameTextField.snp.bottom).offset(15)
+            make.height.equalTo(50)
+            make.left.equalToSuperview().offset(15)
+            make.right.equalToSuperview().inset(15)
         }
 
         peersCollectionView.snp.makeConstraints { make in
@@ -72,6 +89,17 @@ final class DiscoveryScreenViewController: UIViewController {
     @objc
     private func advertiseTapped() {
         presenter.advertiseButtonTapped()
+    }
+
+    @objc
+    private func peerNameChanged() {
+        if let text = nameTextField.text,
+           !text.isEmpty
+        {
+            presenter.changePeerName(to: text)
+        } else {
+            presenter.changePeerName(to: UIDevice.current.name)
+        }
     }
 }
 

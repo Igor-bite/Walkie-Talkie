@@ -14,6 +14,20 @@ final class TalkingScreenViewController: UIViewController {
 	// swiftlint:disable:next implicitly_unwrapped_optional
     var presenter: TalkingScreenPresenterInterface!
 
+    private lazy var connectedPeerLabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 20)
+        return label
+    }()
+
+    private lazy var distanceToPeerLabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 17)
+        label.textColor = .gray.withAlphaComponent(0.4)
+        label.textAlignment = .right
+        return label
+    }()
+
     private lazy var mapView = {
         let map = MKMapView()
         map.delegate = self
@@ -48,6 +62,15 @@ final class TalkingScreenViewController: UIViewController {
         return button
     }()
 
+    private lazy var sendOkButtonHint = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 15)
+        label.textColor = .blue.withAlphaComponent(0.5)
+        label.textAlignment = .right
+        label.text = "Send OK"
+        return label
+    }()
+
     private lazy var sendLocationButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .gray.withAlphaComponent(0.15)
@@ -59,21 +82,47 @@ final class TalkingScreenViewController: UIViewController {
         return button
     }()
 
+    private lazy var sendLocationButtonHint = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 15)
+        label.textColor = .blue.withAlphaComponent(0.5)
+        label.textAlignment = .left
+        label.text = "Send location"
+        return label
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
+        title = "Walkie-Talkie"
         setup()
+        presenter.updateHintsVisibility()
     }
 
     private func setup() {
+        view.addSubview(connectedPeerLabel)
+        view.addSubview(distanceToPeerLabel)
         view.addSubview(mapView)
         view.addSubview(talkButton)
         view.addSubview(sendOkButton)
+        view.addSubview(sendOkButtonHint)
         view.addSubview(sendLocationButton)
+        view.addSubview(sendLocationButtonHint)
+
+        connectedPeerLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.left.equalToSuperview().offset(20)
+            make.right.lessThanOrEqualTo(distanceToPeerLabel.snp.left).inset(10)
+        }
+
+        distanceToPeerLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(connectedPeerLabel)
+            make.right.equalToSuperview().inset(20)
+        }
 
         mapView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(connectedPeerLabel.snp.bottom).offset(10)
             make.bottom.equalTo(talkButton.snp.top).offset(-20)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().inset(20)
@@ -92,10 +141,20 @@ final class TalkingScreenViewController: UIViewController {
             make.width.height.equalTo(60)
         }
 
+        sendOkButtonHint.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(3)
+            make.bottom.equalToSuperview().inset(3)
+        }
+
         sendLocationButton.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.bottom.equalToSuperview().inset(20)
             make.width.height.equalTo(60)
+        }
+
+        sendLocationButtonHint.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(3)
+            make.bottom.equalToSuperview().inset(3)
         }
     }
 
@@ -151,6 +210,34 @@ extension TalkingScreenViewController: TalkingScreenViewInterface {
             talkButton.backgroundColor = .gray.withAlphaComponent(0.3)
             talkButton.isUserInteractionEnabled = reason == .recording
             talkButton.setTitle(reason.rawValue, for: .normal)
+        }
+    }
+
+    func setPeerName(_ name: String) {
+        connectedPeerLabel.text = name
+    }
+
+    func setPeerDistance(_ distance: Int?) {
+        UIView.animate(withDuration: 0.5, delay: 0) {
+            if let distance = distance {
+                self.distanceToPeerLabel.alpha = 1
+                self.distanceToPeerLabel.text = "~\(distance) m"
+            } else {
+                self.distanceToPeerLabel.alpha = 0
+                self.distanceToPeerLabel.text = nil
+            }
+        }
+    }
+
+    func setLocationButtonHintVisibility(_ isHidden: Bool, animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
+            self.sendLocationButtonHint.alpha = isHidden ? 0 : 1
+        }
+    }
+
+    func setOkButtonHintVisibility(_ isHidden: Bool, animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
+            self.sendOkButtonHint.alpha = isHidden ? 0 : 1
         }
     }
 }
