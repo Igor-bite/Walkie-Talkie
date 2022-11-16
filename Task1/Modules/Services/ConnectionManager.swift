@@ -62,7 +62,8 @@ final class ConnectionManager: NSObject {
 
     private var isAdvertising = false
     private var isBrowsing = false
-
+    private var isGettingVoice = false
+    
     private override init() {
         super.init()
         session = .init(peer: myPeerId, securityIdentity: nil, encryptionPreference: .required)
@@ -181,8 +182,6 @@ final class ConnectionManager: NSObject {
     private func requestLocationAccess() {
         locationManager.requestWhenInUseAuthorization()
     }
-
-    private var isGettingVoice = false
 }
 
 extension ConnectionManager: MCSessionDelegate {

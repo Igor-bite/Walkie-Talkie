@@ -17,8 +17,16 @@ final class DiscoveryScreenViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = UIDevice.current.name
         textField.text = UserDefaults.standard.string(forKey: ConnectionManager.peerNameKey)
-        textField.addTarget(self, action: #selector(peerNameChanged), for: .editingChanged)
         return textField
+    }()
+
+    private lazy var saveNameButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .blue.withAlphaComponent(0.5)
+        button.layer.cornerRadius = 10
+        button.setTitle("Save", for: .normal)
+        button.addTarget(self, action: #selector(saveNameTapped), for: .touchUpInside)
+        return button
     }()
 
     private lazy var advertiseButton: UIButton = {
@@ -63,14 +71,22 @@ final class DiscoveryScreenViewController: UIViewController {
 
     private func setup() {
         view.addSubview(nameTextField)
+        view.addSubview(saveNameButton)
         view.addSubview(advertiseButton)
         view.addSubview(peersCollectionView)
 
         nameTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(15)
-            make.height.equalTo(50)
-            make.left.equalToSuperview().offset(15)
+            make.height.equalTo(40)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalTo(saveNameButton.snp.left).inset(10)
+        }
+
+        saveNameButton.snp.makeConstraints { make in
+            make.centerY.equalTo(nameTextField)
+            make.height.equalTo(40)
             make.right.equalToSuperview().inset(15)
+            make.width.equalTo((saveNameButton.titleLabel?.intrinsicContentSize.width ?? 0) + 40)
         }
 
         advertiseButton.snp.makeConstraints { make in
@@ -92,7 +108,7 @@ final class DiscoveryScreenViewController: UIViewController {
     }
 
     @objc
-    private func peerNameChanged() {
+    private func saveNameTapped() {
         if let text = nameTextField.text,
            !text.isEmpty
         {
