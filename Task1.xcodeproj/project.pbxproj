@@ -25,6 +25,7 @@
 		A551D0E82922A91D00241A76 /* TalkBlockReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0E72922A91D00241A76 /* TalkBlockReason.swift */; };
 		A551D0EB2922D43B00241A76 /* PeerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0EA2922D43B00241A76 /* PeerCell.swift */; };
 		A551D0ED2922D45500241A76 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0EC2922D45500241A76 /* Section.swift */; };
+		A5D629832925718000FF8C96 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D629822925718000FF8C96 /* LocationManager.swift */; };
 		A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */; };
 		A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC74291C0E2700253DB3 /* SnapKit */; };
 		A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC77291C167B00253DB3 /* Reusable */; };
@@ -53,6 +54,7 @@
 		A551D0E72922A91D00241A76 /* TalkBlockReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkBlockReason.swift; sourceTree = "<group>"; };
 		A551D0EA2922D43B00241A76 /* PeerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerCell.swift; sourceTree = "<group>"; };
 		A551D0EC2922D45500241A76 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		A5D629822925718000FF8C96 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStreamer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -183,6 +185,7 @@
 			children = (
 				A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */,
 				A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */,
+				A5D629822925718000FF8C96 /* LocationManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				A551D0EB2922D43B00241A76 /* PeerCell.swift in Sources */,
 				A551D0E2292295A100241A76 /* DiscoveryScreenViewController.swift in Sources */,
 				A551D0E0292295A100241A76 /* DiscoveryScreenInterfaces.swift in Sources */,
+				A5D629832925718000FF8C96 /* LocationManager.swift in Sources */,
 				A551D0E82922A91D00241A76 /* TalkBlockReason.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -430,8 +434,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Task1/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Task1;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "I need";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need mic for walkie-talkie";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "To connect to peers in local network";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "To record and send voice in walkie-talkie mode";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -450,7 +454,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -465,8 +469,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Task1/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Task1;
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "I need";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need mic for walkie-talkie";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "To connect to peers in local network";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "To record and send voice in walkie-talkie mode";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -484,7 +488,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -24,7 +24,7 @@ protocol ConnectionManagerSessionDelegate: AnyObject {
     func updatePeerLocation(with location: CLLocation, distance: Int?)
 }
 
-final class ConnectionManager: NSObject {
+final class ConnectionManager {
     private enum SendFlags {
         enum Voice {
             static let start = "&voice_start"
