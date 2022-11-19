@@ -114,7 +114,7 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
         view.setLocationButtonHintVisibility(true, animated: true)
     }
 
-    func viewDidAppear() {
+    func viewWillDisappear() {
         connectionManager.disconnect()
     }
 

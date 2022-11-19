@@ -26,6 +26,6 @@ protocol TalkingScreenPresenterInterface: PresenterInterface {
     func talkButtonTouchesEnded()
     func sendOkTapped()
     func sendLocationTapped()
-    func viewDidAppear()
+    func viewWillDisappear()
     func updateHintsVisibility()
 }

@@ -238,7 +238,9 @@ extension ConnectionManager: MCNearbyServiceAdvertiserDelegate {
         let title = "Invitation"
         let message = "Would you like to accept: \(peerID.displayName)"
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "No", style: .cancel) { _ in
+            invitationHandler(false, self.session)
+        })
         alertController.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
             invitationHandler(true, self.session)
         })

@@ -108,6 +108,12 @@ final class TalkingScreenViewController: UIViewController {
         presenter.updateHintsVisibility()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        presenter.viewWillDisappear()
+    }
+
     private func setup() {
         view.addSubview(connectedPeerLabel)
         view.addSubview(distanceToPeerLabel)
@@ -193,12 +199,6 @@ final class TalkingScreenViewController: UIViewController {
     @objc
     private func sendLocation() {
         presenter.sendLocationTapped()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        presenter.viewDidAppear()
     }
 }
 

@@ -116,6 +116,7 @@ final class DiscoveryScreenViewController: UIViewController {
         } else {
             presenter.changePeerName(to: UIDevice.current.name)
         }
+        view.endEditing(true)
     }
 }
 
