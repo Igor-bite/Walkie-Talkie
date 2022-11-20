@@ -433,7 +433,7 @@
 				DEVELOPMENT_TEAM = 4D7YJ8BY8H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Task1/Application/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Task1;
+				INFOPLIST_KEY_CFBundleDisplayName = "Walkie-Talkie";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "To connect to peers in local network";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "To record and send voice in walkie-talkie mode";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -468,7 +468,7 @@
 				DEVELOPMENT_TEAM = 4D7YJ8BY8H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Task1/Application/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Task1;
+				INFOPLIST_KEY_CFBundleDisplayName = "Walkie-Talkie";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "To connect to peers in local network";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "To record and send voice in walkie-talkie mode";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
