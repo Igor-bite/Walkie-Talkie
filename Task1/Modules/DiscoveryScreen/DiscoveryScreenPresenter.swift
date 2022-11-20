@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GradientLoadingBar
 
 final class DiscoveryScreenPresenter {
 
@@ -19,6 +20,7 @@ final class DiscoveryScreenPresenter {
     
     private let connectionManager = ConnectionManager.shared
     private var isAdvertising = false
+    private let gradientLoadingBar = GradientLoadingBar()
 
     init(
         view: DiscoveryScreenViewInterface,
@@ -44,6 +46,7 @@ final class DiscoveryScreenPresenter {
 extension DiscoveryScreenPresenter: DiscoveryScreenPresenterInterface {
     func itemSelected(at indexPath: IndexPath) {
         let peer = peers[indexPath.row]
+        gradientLoadingBar.fadeIn()
         connectionManager.connectTo(peer)
         DispatchQueue.main.async {
             self.view.setAllowsSelection(false)
@@ -79,6 +82,7 @@ extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
 
     func connectedToPeer(_ peer: PeerModel) {
         DispatchQueue.main.async {
+            self.gradientLoadingBar.fadeOut()
             self.wireframe.showTalkingScreen(withPeer: peer)
             self.view.setAdvertiseButtonTitle("Advertise")
         }

@@ -114,6 +114,11 @@ final class TalkingScreenViewController: UIViewController {
         presenter.viewWillDisappear()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
+
     private func setup() {
         view.addSubview(connectedPeerLabel)
         view.addSubview(distanceToPeerLabel)

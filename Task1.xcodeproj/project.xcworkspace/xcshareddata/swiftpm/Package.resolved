@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "gradientloadingbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fxm90/GradientLoadingBar",
+      "state" : {
+        "revision" : "85cd3fe00dd85135ba32d8a6629144c5590430ac",
+        "version" : "3.0.0"
+      }
+    },
+    {
       "identity" : "reusable",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/AliSoftware/Reusable.git",

@@ -26,6 +26,7 @@
 		A551D0EB2922D43B00241A76 /* PeerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0EA2922D43B00241A76 /* PeerCell.swift */; };
 		A551D0ED2922D45500241A76 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0EC2922D45500241A76 /* Section.swift */; };
 		A5D629832925718000FF8C96 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D629822925718000FF8C96 /* LocationManager.swift */; };
+		A5E6A2BE292A7ECE005018E8 /* GradientLoadingBar in Frameworks */ = {isa = PBXBuildFile; productRef = A5E6A2BD292A7ECE005018E8 /* GradientLoadingBar */; };
 		A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */; };
 		A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC74291C0E2700253DB3 /* SnapKit */; };
 		A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */ = {isa = PBXBuildFile; productRef = A5F0DC77291C167B00253DB3 /* Reusable */; };
@@ -67,6 +68,7 @@
 				A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */,
 				A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */,
 				A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */,
+				A5E6A2BE292A7ECE005018E8 /* GradientLoadingBar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +212,7 @@
 				A5F0DC74291C0E2700253DB3 /* SnapKit */,
 				A5F0DC77291C167B00253DB3 /* Reusable */,
 				A5F0DC7C291C252D00253DB3 /* SPIndicator */,
+				A5E6A2BD292A7ECE005018E8 /* GradientLoadingBar */,
 			);
 			productName = AvitoInternship2022;
 			productReference = A529C2B028FEF60500E2FD55 /* Task1.app */;
@@ -244,6 +247,7 @@
 				A5F0DC73291C0E2700253DB3 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				A5F0DC76291C167B00253DB3 /* XCRemoteSwiftPackageReference "Reusable" */,
 				A5F0DC7B291C252D00253DB3 /* XCRemoteSwiftPackageReference "SPIndicator" */,
+				A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */,
 			);
 			productRefGroup = A529C2B128FEF60500E2FD55 /* Products */;
 			projectDirPath = "";
@@ -516,6 +520,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fxm90/GradientLoadingBar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		A5F0DC73291C0E2700253DB3 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -543,6 +555,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A5E6A2BD292A7ECE005018E8 /* GradientLoadingBar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */;
+			productName = GradientLoadingBar;
+		};
 		A5F0DC74291C0E2700253DB3 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A5F0DC73291C0E2700253DB3 /* XCRemoteSwiftPackageReference "SnapKit" */;
