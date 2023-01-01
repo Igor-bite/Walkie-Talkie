@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Reusable
 import MapKit
+import Pulsator
 
 final class TalkingScreenViewController: UIViewController {
 	// swiftlint:disable:next implicitly_unwrapped_optional
@@ -79,15 +80,30 @@ final class TalkingScreenViewController: UIViewController {
         return label
     }()
 
+    private var holdStart = Date(timeIntervalSince1970: 0)
+    private var shouldRecognizeHold = true
+    private let holdDuration = 0.5
+
     private lazy var sendLocationButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .gray.withAlphaComponent(0.15)
+        button.backgroundColor = .inactiveColor
         button.layer.cornerRadius = 30
         button.setTitle("📍", for: .normal)
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.font = .systemFont(ofSize: 30)
-        button.addTarget(self, action: #selector(sendLocation), for: .touchDown)
+        button.addTarget(self, action: #selector(startRecognizer), for: .touchDown)
+        button.addTarget(self, action: #selector(endRecognizer), for: .touchUpInside)
+        let holdGR = UILongPressGestureRecognizer(target: self, action: #selector(holdRecognizer))
+        button.addGestureRecognizer(holdGR)
         return button
+    }()
+
+    private lazy var pulsator: Pulsator = {
+        let pulsator = Pulsator()
+        pulsator.backgroundColor = UIColor.blue.withAlphaComponent(0.7).cgColor
+        pulsator.numPulse = 2
+        pulsator.radius = 60
+        return pulsator
     }()
 
     private lazy var sendLocationButtonHint = {
@@ -106,6 +122,7 @@ final class TalkingScreenViewController: UIViewController {
         title = "Walkie-Talkie"
         setup()
         presenter.updateHintsVisibility()
+        sendLocationButton.layer.superlayer?.insertSublayer(pulsator, below: sendLocationButton.layer)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -117,6 +134,10 @@ final class TalkingScreenViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = false
+    }
+
+    override func viewDidLayoutSubviews() {
+        pulsator.position = sendLocationButton.layer.position
     }
 
     private func setup() {
@@ -202,8 +223,72 @@ final class TalkingScreenViewController: UIViewController {
     }
 
     @objc
+    private func holdRecognizer(sender: UILongPressGestureRecognizer) {
+        if sender.state == .ended {
+            stopScale()
+            holdStart = Date(timeIntervalSince1970: 0)
+            return
+        }
+
+        guard shouldRecognizeHold else { return }
+
+        if holdStart == Date(timeIntervalSince1970: 0) {
+            holdStart = Date()
+            startScale()
+        } else {
+            if Date().timeIntervalSince1970 - holdStart.timeIntervalSince1970 > holdDuration {
+                shouldRecognizeHold = false
+                toggleShareLocation()
+                stopScale()
+                holdStart = Date(timeIntervalSince1970: 0)
+            }
+        }
+    }
+
+    private func startScale() {
+        UIView.animate(withDuration: holdDuration) {
+            self.sendLocationButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+        }
+    }
+
+    private func stopScale() {
+        UIView.animate(withDuration: 0.1) {
+            self.sendLocationButton.transform = .identity
+        }
+    }
+
+    @objc
+    private func startRecognizer() {
+        shouldRecognizeHold = true
+
+        if holdStart == Date(timeIntervalSince1970: 0) {
+            holdStart = Date()
+            startScale()
+        }
+
+        print(#function)
+    }
+
+    @objc
+    private func endRecognizer() {
+        stopScale()
+        holdStart = Date(timeIntervalSince1970: 0)
+        sendLocation()
+    }
+
     private func sendLocation() {
         presenter.sendLocationTapped()
+    }
+
+    private func toggleShareLocation() {
+        presenter.toggleShareLocation()
+        if pulsator.isPulsating {
+            pulsator.stop()
+            sendLocationButton.backgroundColor = .inactiveColor
+        } else {
+            pulsator.start()
+            sendLocationButton.backgroundColor = .accentColor
+        }
     }
 }
 
@@ -219,7 +304,7 @@ extension TalkingScreenViewController: TalkingScreenViewInterface {
         if mapView.view(for: annotation) == nil {
             mapView.addAnnotation(annotation)
         }
-        mapView.showAnnotations([annotation], animated: true)
+        mapView.showAnnotations(mapView.annotations, animated: true)
     }
 
     func setLocationUpdateDate(with text: String) {

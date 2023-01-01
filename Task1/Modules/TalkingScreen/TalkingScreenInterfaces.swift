@@ -28,4 +28,5 @@ protocol TalkingScreenPresenterInterface: PresenterInterface {
     func sendLocationTapped()
     func viewWillDisappear()
     func updateHintsVisibility()
+    func toggleShareLocation()
 }

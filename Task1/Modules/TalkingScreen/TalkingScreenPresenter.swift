@@ -27,6 +27,7 @@ final class TalkingScreenPresenter {
         return annotation
     }()
     private var shouldSendLocationOnNextUpdate = false
+    private var isSharingLocation = false
     private var locationDateUpdateTimer: Timer?
     private var peerLocationUpdateDate: Date?
 
@@ -44,6 +45,9 @@ final class TalkingScreenPresenter {
             guard let self = self else { return }
             if self.shouldSendLocationOnNextUpdate {
                 self.shouldSendLocationOnNextUpdate = false
+                self.connectionManager.sendLocation(location, to: peer)
+            }
+            if self.isSharingLocation {
                 self.connectionManager.sendLocation(location, to: peer)
             }
             let peerLocation = CLLocation(latitude: self.peerLocationAnnotation.coordinate.latitude,
@@ -74,7 +78,7 @@ final class TalkingScreenPresenter {
     private func updateLocationUpdateDate() {
         let now = Date()
         guard let peerLocationUpdateDate = self.peerLocationUpdateDate,
-              now.timeIntervalSince(peerLocationUpdateDate) >= 1
+              now.timeIntervalSince(peerLocationUpdateDate) >= 1 // TODO: not working when live location
         else { return }
 
         let formatter = RelativeDateTimeFormatter()
@@ -112,6 +116,12 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
         connectionManager.sendLocation(locationManager.currentLocation, to: peer)
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
         view.setLocationButtonHintVisibility(true, animated: true)
+    }
+
+    func toggleShareLocation() {
+        UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
+        view.setLocationButtonHintVisibility(true, animated: true)
+        isSharingLocation.toggle()
     }
 
     func viewWillDisappear() {

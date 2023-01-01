@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Pulsator
 
 final class DiscoveryScreenViewController: UIViewController {
 
@@ -38,6 +39,14 @@ final class DiscoveryScreenViewController: UIViewController {
         return button
     }()
 
+    private lazy var pulsator: Pulsator = {
+        let pulsator = Pulsator()
+        pulsator.backgroundColor = UIColor.blue.withAlphaComponent(0.7).cgColor
+        pulsator.numPulse = 2
+        pulsator.radius = UIScreen.main.bounds.width
+        return pulsator
+    }()
+
     private let dataSource: DataSource
     private let peersCollectionView: UICollectionView
 
@@ -67,11 +76,16 @@ final class DiscoveryScreenViewController: UIViewController {
         view.backgroundColor = .white
         title = "Discovery"
         setup()
+        view.layer.addSublayer(pulsator)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
+    }
+
+    override func viewDidLayoutSubviews() {
+        pulsator.position = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height + UIScreen.main.bounds.width / 3)
     }
 
     private func setup() {
@@ -110,6 +124,11 @@ final class DiscoveryScreenViewController: UIViewController {
     @objc
     private func advertiseTapped() {
         presenter.advertiseButtonTapped()
+        if pulsator.isPulsating {
+            pulsator.stop()
+        } else {
+            pulsator.start()
+        }
     }
 
     @objc

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */ = {isa = PBXBuildFile; productRef = A52581CE29620FCE00136BE7 /* Pulsator */; };
+		A52581D129621DCA00136BE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52581D029621DCA00136BE7 /* Constants.swift */; };
 		A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C2B328FEF60500E2FD55 /* AppDelegate.swift */; };
 		A529C2BD28FEF60600E2FD55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BC28FEF60600E2FD55 /* Assets.xcassets */; };
 		A529C2C028FEF60600E2FD55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BE28FEF60600E2FD55 /* LaunchScreen.storyboard */; };
@@ -35,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A52581D029621DCA00136BE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A529C2B028FEF60500E2FD55 /* Task1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A529C2B328FEF60500E2FD55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A529C2BC28FEF60600E2FD55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -66,6 +69,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */,
+				A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */,
 				A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */,
 				A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */,
 				A5E6A2BE292A7ECE005018E8 /* GradientLoadingBar in Frameworks */,
@@ -108,6 +112,7 @@
 				A529C2B328FEF60500E2FD55 /* AppDelegate.swift */,
 				A529C2BE28FEF60600E2FD55 /* LaunchScreen.storyboard */,
 				A529C2C128FEF60600E2FD55 /* Info.plist */,
+				A52581D029621DCA00136BE7 /* Constants.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -213,6 +218,7 @@
 				A5F0DC77291C167B00253DB3 /* Reusable */,
 				A5F0DC7C291C252D00253DB3 /* SPIndicator */,
 				A5E6A2BD292A7ECE005018E8 /* GradientLoadingBar */,
+				A52581CE29620FCE00136BE7 /* Pulsator */,
 			);
 			productName = AvitoInternship2022;
 			productReference = A529C2B028FEF60500E2FD55 /* Task1.app */;
@@ -248,6 +254,7 @@
 				A5F0DC76291C167B00253DB3 /* XCRemoteSwiftPackageReference "Reusable" */,
 				A5F0DC7B291C252D00253DB3 /* XCRemoteSwiftPackageReference "SPIndicator" */,
 				A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */,
+				A52581CD29620FCE00136BE7 /* XCRemoteSwiftPackageReference "Pulsator" */,
 			);
 			productRefGroup = A529C2B128FEF60500E2FD55 /* Products */;
 			projectDirPath = "";
@@ -285,6 +292,7 @@
 				A551D0DA2922958500241A76 /* TalkingScreenViewController.swift in Sources */,
 				A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */,
 				A551D0ED2922D45500241A76 /* Section.swift in Sources */,
+				A52581D129621DCA00136BE7 /* Constants.swift in Sources */,
 				A551D0D92922958500241A76 /* TalkingScreenPresenter.swift in Sources */,
 				A551D0E62922A8B600241A76 /* PeerModel.swift in Sources */,
 				A551D0DB2922958500241A76 /* TalkingScreenWireframe.swift in Sources */,
@@ -520,6 +528,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A52581CD29620FCE00136BE7 /* XCRemoteSwiftPackageReference "Pulsator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/shu223/Pulsator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.3;
+			};
+		};
 		A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fxm90/GradientLoadingBar";
@@ -555,6 +571,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A52581CE29620FCE00136BE7 /* Pulsator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A52581CD29620FCE00136BE7 /* XCRemoteSwiftPackageReference "Pulsator" */;
+			productName = Pulsator;
+		};
 		A5E6A2BD292A7ECE005018E8 /* GradientLoadingBar */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */;
