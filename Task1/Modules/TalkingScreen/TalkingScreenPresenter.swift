@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 import MapKit
+import Flurry_iOS_SDK
 
 final class TalkingScreenPresenter {
     private enum HintShowedKeys {
@@ -99,20 +100,24 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
     func talkButtonTouchesBegan() {
         view.setTalkButtonState(.blocked(reason: .recording))
         connectionManager.startStreamingVoice(to: peer)
+        Flurry.log(eventName: "voice_streaming", timed: true)
     }
 
     func talkButtonTouchesEnded() {
         view.setTalkButtonState(.ready)
         connectionManager.stopStreamingVoice(to: peer)
+        Flurry.endTimedEvent(eventName: "voice_streaming", parameters: nil)
     }
 
     func sendOkTapped() {
         connectionManager.sendMessage(mes: "OK", to: peer)
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendOkHintHidden)
         view.setOkButtonHintVisibility(true)
+        Flurry.log(eventName: "sended_ok")
     }
 
     func sendLocationTapped() {
+        Flurry.log(eventName: "sended_location")
         connectionManager.sendLocation(locationManager.currentLocation, to: peer)
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
         view.setLocationButtonHintVisibility(true)
@@ -122,6 +127,11 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
         view.setLocationButtonHintVisibility(true)
         isSharingLocation.toggle()
+        if isSharingLocation {
+            Flurry.log(eventName: "location_sharing", timed: true)
+        } else {
+            Flurry.endTimedEvent(eventName: "location_sharing", parameters: nil)
+        }
     }
 
     func viewWillDisappear() {

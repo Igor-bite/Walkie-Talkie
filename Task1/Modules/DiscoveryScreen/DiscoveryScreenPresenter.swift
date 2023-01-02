@@ -7,6 +7,7 @@
 
 import Foundation
 import GradientLoadingBar
+import Flurry_iOS_SDK
 
 final class DiscoveryScreenPresenter {
 
@@ -45,6 +46,7 @@ final class DiscoveryScreenPresenter {
 
 extension DiscoveryScreenPresenter: DiscoveryScreenPresenterInterface {
     func itemSelected(at indexPath: IndexPath) {
+        Flurry.log(eventName: "trying_to_connect")
         let peer = peers[indexPath.row]
         gradientLoadingBar.fadeIn()
         connectionManager.connectTo(peer)
@@ -57,15 +59,18 @@ extension DiscoveryScreenPresenter: DiscoveryScreenPresenterInterface {
         if isAdvertising {
             view.setAdvertiseButtonTitle("Advertise")
             connectionManager.stopAdvertising()
+            Flurry.log(eventName: "advertise_started")
         } else {
             view.setAdvertiseButtonTitle("Stop advertising")
             connectionManager.startAdvertising()
+            Flurry.log(eventName: "advertise_stopped")
         }
         isAdvertising.toggle()
     }
 
     func changePeerName(to name: String) {
         connectionManager.changePeerName(to: name)
+        Flurry.log(eventName: "peer_name_changed")
     }
 }
 
@@ -81,6 +86,7 @@ extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
     }
 
     func connectedToPeer(_ peer: PeerModel) {
+        Flurry.log(eventName: "connection_session", timed: true)
         DispatchQueue.main.async {
             self.gradientLoadingBar.fadeOut()
             self.wireframe.showTalkingScreen(withPeer: peer)
@@ -91,6 +97,7 @@ extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
     }
 
     func disconnectedFromPeer(_ peer: PeerModel) {
+        Flurry.endTimedEvent(eventName: "connection_session", parameters: nil)
         DispatchQueue.main.async {
             self.view.setAllowsSelection(true)
             self.wireframe.showIndicator(withTitle: "Connection declined", message: nil, preset: .error)

@@ -7,6 +7,7 @@
 
 import UIKit
 import EasyTipView
+import Flurry_iOS_SDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         showSimulatorDataOnDesktop()
         setupTooltip()
+        setupAnalytics()
         
         return true
     }
@@ -57,5 +59,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         preferences.drawing.arrowPosition = .top
         EasyTipView.globalPreferences = preferences
 
+    }
+
+    private func setupAnalytics() {
+        let sb = FlurrySessionBuilder()
+            .build(logLevel: FlurryLogLevel.all)
+            .build(crashReportingEnabled: true)
+            .build(appVersion: "1.0")
+            .build(iapReportingEnabled: true)
+
+        Flurry.startSession(apiKey: "44KW2S87X483RJ4GTB9H", sessionBuilder: sb)
     }
 }

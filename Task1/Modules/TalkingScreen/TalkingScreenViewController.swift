@@ -130,6 +130,7 @@ final class TalkingScreenViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         presenter.updateHintsVisibility()
+        mapView.showAnnotations(mapView.annotations, animated: true)
     }
 
     private func setup() {

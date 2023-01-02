@@ -12,6 +12,9 @@
 		A52581D42962441100136BE7 /* UIOnboarding in Frameworks */ = {isa = PBXBuildFile; productRef = A52581D32962441100136BE7 /* UIOnboarding */; };
 		A52581D62962442C00136BE7 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52581D52962442C00136BE7 /* Onboarding.swift */; };
 		A52581DB2963237B00136BE7 /* EasyTipView in Frameworks */ = {isa = PBXBuildFile; productRef = A52581DA2963237B00136BE7 /* EasyTipView */; };
+		A52581DE2963868800136BE7 /* Flurry in Frameworks */ = {isa = PBXBuildFile; productRef = A52581DD2963868800136BE7 /* Flurry */; };
+		A52581E02963868800136BE7 /* FlurryConfig in Frameworks */ = {isa = PBXBuildFile; productRef = A52581DF2963868800136BE7 /* FlurryConfig */; };
+		A52581E22963868800136BE7 /* FlurryMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = A52581E12963868800136BE7 /* FlurryMessaging */; };
 		A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C2B328FEF60500E2FD55 /* AppDelegate.swift */; };
 		A529C2BD28FEF60600E2FD55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BC28FEF60600E2FD55 /* Assets.xcassets */; };
 		A529C2C028FEF60600E2FD55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BE28FEF60600E2FD55 /* LaunchScreen.storyboard */; };
@@ -74,7 +77,10 @@
 			files = (
 				A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */,
 				A52581D42962441100136BE7 /* UIOnboarding in Frameworks */,
+				A52581DE2963868800136BE7 /* Flurry in Frameworks */,
 				A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */,
+				A52581E02963868800136BE7 /* FlurryConfig in Frameworks */,
+				A52581E22963868800136BE7 /* FlurryMessaging in Frameworks */,
 				A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */,
 				A52581DB2963237B00136BE7 /* EasyTipView in Frameworks */,
 				A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */,
@@ -228,6 +234,9 @@
 				A52581CE29620FCE00136BE7 /* Pulsator */,
 				A52581D32962441100136BE7 /* UIOnboarding */,
 				A52581DA2963237B00136BE7 /* EasyTipView */,
+				A52581DD2963868800136BE7 /* Flurry */,
+				A52581DF2963868800136BE7 /* FlurryConfig */,
+				A52581E12963868800136BE7 /* FlurryMessaging */,
 			);
 			productName = AvitoInternship2022;
 			productReference = A529C2B028FEF60500E2FD55 /* Task1.app */;
@@ -266,6 +275,7 @@
 				A52581CD29620FCE00136BE7 /* XCRemoteSwiftPackageReference "Pulsator" */,
 				A52581D22962441100136BE7 /* XCRemoteSwiftPackageReference "UIOnboarding" */,
 				A52581D92963237B00136BE7 /* XCRemoteSwiftPackageReference "EasyTipView" */,
+				A52581DC2963868800136BE7 /* XCRemoteSwiftPackageReference "FlurrySwiftPackage" */,
 			);
 			productRefGroup = A529C2B128FEF60500E2FD55 /* Products */;
 			projectDirPath = "";
@@ -564,6 +574,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		A52581DC2963868800136BE7 /* XCRemoteSwiftPackageReference "FlurrySwiftPackage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/flurry/FlurrySwiftPackage/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
 		A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fxm90/GradientLoadingBar";
@@ -613,6 +631,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A52581D92963237B00136BE7 /* XCRemoteSwiftPackageReference "EasyTipView" */;
 			productName = EasyTipView;
+		};
+		A52581DD2963868800136BE7 /* Flurry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A52581DC2963868800136BE7 /* XCRemoteSwiftPackageReference "FlurrySwiftPackage" */;
+			productName = Flurry;
+		};
+		A52581DF2963868800136BE7 /* FlurryConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A52581DC2963868800136BE7 /* XCRemoteSwiftPackageReference "FlurrySwiftPackage" */;
+			productName = FlurryConfig;
+		};
+		A52581E12963868800136BE7 /* FlurryMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A52581DC2963868800136BE7 /* XCRemoteSwiftPackageReference "FlurrySwiftPackage" */;
+			productName = FlurryMessaging;
 		};
 		A5E6A2BD292A7ECE005018E8 /* GradientLoadingBar */ = {
 			isa = XCSwiftPackageProductDependency;

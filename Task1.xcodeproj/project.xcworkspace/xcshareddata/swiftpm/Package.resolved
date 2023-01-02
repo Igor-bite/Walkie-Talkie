@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "flurryswiftpackage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/flurry/FlurrySwiftPackage/",
+      "state" : {
+        "revision" : "6e614a60a394cd99a344ae16e6dd9a9d6d2105fa",
+        "version" : "12.1.4"
+      }
+    },
+    {
       "identity" : "gradientloadingbar",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/fxm90/GradientLoadingBar",
