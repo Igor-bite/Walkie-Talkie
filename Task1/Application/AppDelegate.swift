@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EasyTipView
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,7 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
 
         showSimulatorDataOnDesktop()
-
+        setupTooltip()
+        
         return true
     }
 
@@ -46,5 +48,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try? fileManager.createSymbolicLink(at: symlink, withDestinationURL: simulatorHome)
         }
 #endif
+    }
+
+    private func setupTooltip() {
+        var preferences = EasyTipView.Preferences()
+        preferences.drawing.foregroundColor = .white
+        preferences.drawing.backgroundColor = .darkGray
+        preferences.drawing.arrowPosition = .top
+        EasyTipView.globalPreferences = preferences
+
     }
 }

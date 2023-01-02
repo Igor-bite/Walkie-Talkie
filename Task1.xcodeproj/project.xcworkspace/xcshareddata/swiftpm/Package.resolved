@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "easytipview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/teodorpatras/EasyTipView",
+      "state" : {
+        "revision" : "1cba0e75f745da03773cd7092480c5fa8cde4a72",
+        "version" : "2.1.0"
+      }
+    },
+    {
       "identity" : "gradientloadingbar",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/fxm90/GradientLoadingBar",
@@ -43,6 +52,15 @@
       "state" : {
         "revision" : "43600857729d9efff046dc6673e6f94e095882c7",
         "version" : "1.6.4"
+      }
+    },
+    {
+      "identity" : "uionboarding",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lascic/UIOnboarding.git",
+      "state" : {
+        "revision" : "36993476b4d15445112e1887aeaae69ee1eabd3f",
+        "version" : "2.0.0"
       }
     }
   ],

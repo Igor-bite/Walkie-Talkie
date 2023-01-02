@@ -10,6 +10,7 @@ import SnapKit
 import Reusable
 import MapKit
 import Pulsator
+import EasyTipView
 
 final class TalkingScreenViewController: UIViewController {
 	// swiftlint:disable:next implicitly_unwrapped_optional
@@ -71,15 +72,6 @@ final class TalkingScreenViewController: UIViewController {
         return button
     }()
 
-    private lazy var sendOkButtonHint = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 15)
-        label.textColor = .blue.withAlphaComponent(0.4)
-        label.textAlignment = .right
-        label.text = "Send OK"
-        return label
-    }()
-
     private var holdStart = Date(timeIntervalSince1970: 0)
     private var shouldRecognizeHold = true
     private let holdDuration = 0.5
@@ -106,14 +98,10 @@ final class TalkingScreenViewController: UIViewController {
         return pulsator
     }()
 
-    private lazy var sendLocationButtonHint = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 15)
-        label.textColor = .blue.withAlphaComponent(0.4)
-        label.textAlignment = .left
-        label.text = "Send location"
-        return label
-    }()
+    private lazy var sendLocationButtonTooltip = EasyTipView(text: "TAP - send location\nHOLD - share live location")
+    private lazy var sendOkButtonTooltip = EasyTipView(text: "TAP - send OK")
+
+    private let generator = UISelectionFeedbackGenerator()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,7 +109,6 @@ final class TalkingScreenViewController: UIViewController {
         view.backgroundColor = .white
         title = "Walkie-Talkie"
         setup()
-        presenter.updateHintsVisibility()
         sendLocationButton.layer.superlayer?.insertSublayer(pulsator, below: sendLocationButton.layer)
     }
 
@@ -140,6 +127,11 @@ final class TalkingScreenViewController: UIViewController {
         pulsator.position = sendLocationButton.layer.position
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presenter.updateHintsVisibility()
+    }
+
     private func setup() {
         view.addSubview(connectedPeerLabel)
         view.addSubview(distanceToPeerLabel)
@@ -147,9 +139,7 @@ final class TalkingScreenViewController: UIViewController {
         view.addSubview(locationUpdateDate)
         view.addSubview(talkButton)
         view.addSubview(sendOkButton)
-        view.addSubview(sendOkButtonHint)
         view.addSubview(sendLocationButton)
-        view.addSubview(sendLocationButtonHint)
 
         connectedPeerLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
@@ -188,37 +178,31 @@ final class TalkingScreenViewController: UIViewController {
             make.width.height.equalTo(60)
         }
 
-        sendOkButtonHint.snp.makeConstraints { make in
-            make.right.lessThanOrEqualToSuperview().inset(3)
-            make.bottom.equalToSuperview().inset(3)
-            make.centerX.equalTo(sendOkButton).priority(.medium)
-        }
-
         sendLocationButton.snp.makeConstraints { make in
             make.left.greaterThanOrEqualToSuperview().offset(20)
             make.bottom.equalToSuperview().inset(20)
             make.width.height.equalTo(60)
         }
-
-        sendLocationButtonHint.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(3)
-            make.bottom.equalToSuperview().inset(3)
-            make.centerX.equalTo(sendLocationButton).priority(.medium)
-        }
     }
 
     @objc
     private func talk() {
+        generator.prepare()
+        generator.selectionChanged()
         presenter.talkButtonTouchesBegan()
     }
 
     @objc
     private func end() {
+        generator.prepare()
+        generator.selectionChanged()
         presenter.talkButtonTouchesEnded()
     }
 
     @objc
     private func sendOk() {
+        generator.prepare()
+        generator.selectionChanged()
         presenter.sendOkTapped()
     }
 
@@ -277,10 +261,14 @@ final class TalkingScreenViewController: UIViewController {
     }
 
     private func sendLocation() {
+        generator.prepare()
+        generator.selectionChanged()
         presenter.sendLocationTapped()
     }
 
     private func toggleShareLocation() {
+        generator.prepare()
+        generator.selectionChanged()
         presenter.toggleShareLocation()
         if pulsator.isPulsating {
             pulsator.stop()
@@ -342,15 +330,25 @@ extension TalkingScreenViewController: TalkingScreenViewInterface {
         }
     }
 
-    func setLocationButtonHintVisibility(_ isHidden: Bool, animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
-            self.sendLocationButtonHint.alpha = isHidden ? 0 : 1
+    func setLocationButtonHintVisibility(_ isHidden: Bool) {
+        if !isHidden {
+            sendLocationButtonTooltip.show(forView: sendLocationButton)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                self.sendLocationButtonTooltip.dismiss()
+            }
+        } else {
+            sendLocationButtonTooltip.dismiss()
         }
     }
 
-    func setOkButtonHintVisibility(_ isHidden: Bool, animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.5 : 0, delay: 0) {
-            self.sendOkButtonHint.alpha = isHidden ? 0 : 1
+    func setOkButtonHintVisibility(_ isHidden: Bool) {
+        if !isHidden {
+            sendOkButtonTooltip.show(forView: sendOkButton)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                self.sendOkButtonTooltip.dismiss()
+            }
+        } else {
+            sendOkButtonTooltip.dismiss()
         }
     }
 }

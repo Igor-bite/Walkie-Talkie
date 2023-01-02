@@ -17,8 +17,8 @@ protocol TalkingScreenViewInterface: ViewInterface {
     func setTalkButtonState(_ state: TalkButtonState)
     func setPeerName(_ name: String)
     func setPeerDistance(_ distance: Int?)
-    func setLocationButtonHintVisibility(_ isHidden: Bool, animated: Bool)
-    func setOkButtonHintVisibility(_ isHidden: Bool, animated: Bool)
+    func setLocationButtonHintVisibility(_ isHidden: Bool)
+    func setOkButtonHintVisibility(_ isHidden: Bool)
 }
 
 protocol TalkingScreenPresenterInterface: PresenterInterface {

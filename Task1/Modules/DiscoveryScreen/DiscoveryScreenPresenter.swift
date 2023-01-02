@@ -86,6 +86,7 @@ extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
             self.wireframe.showTalkingScreen(withPeer: peer)
             self.view.setAdvertiseButtonTitle("Advertise")
         }
+        isAdvertising = false
         connectionManager.stopAdvertising()
     }
 

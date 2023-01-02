@@ -109,18 +109,18 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
     func sendOkTapped() {
         connectionManager.sendMessage(mes: "OK", to: peer)
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendOkHintHidden)
-        view.setOkButtonHintVisibility(true, animated: true)
+        view.setOkButtonHintVisibility(true)
     }
 
     func sendLocationTapped() {
         connectionManager.sendLocation(locationManager.currentLocation, to: peer)
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
-        view.setLocationButtonHintVisibility(true, animated: true)
+        view.setLocationButtonHintVisibility(true)
     }
 
     func toggleShareLocation() {
         UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
-        view.setLocationButtonHintVisibility(true, animated: true)
+        view.setLocationButtonHintVisibility(true)
         isSharingLocation.toggle()
     }
 
@@ -129,8 +129,8 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
     }
 
     func updateHintsVisibility() {
-        view.setOkButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendOkHintHidden), animated: false)
-        view.setLocationButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendLocationHintHidden), animated: false)
+        view.setOkButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendOkHintHidden))
+        view.setLocationButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendLocationHintHidden))
     }
 }
 

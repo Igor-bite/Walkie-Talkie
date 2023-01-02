@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "walkie-talkie.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

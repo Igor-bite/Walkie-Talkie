@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Pulsator
+import UIOnboarding
 
 final class DiscoveryScreenViewController: UIViewController {
 
@@ -18,12 +19,16 @@ final class DiscoveryScreenViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = UIDevice.current.name
         textField.text = UserDefaults.standard.string(forKey: ConnectionManager.peerNameKey)
+        textField.addTarget(self, action: #selector(nameChanged), for: .editingChanged)
         return textField
     }()
 
+    private var name = UserDefaults.standard.string(forKey: ConnectionManager.peerNameKey) ?? UIDevice.current.name
+
     private lazy var saveNameButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .blue.withAlphaComponent(0.5)
+        button.backgroundColor = .inactiveColor
+        button.isUserInteractionEnabled = false
         button.layer.cornerRadius = 10
         button.setTitle("Save", for: .normal)
         button.addTarget(self, action: #selector(saveNameTapped), for: .touchUpInside)
@@ -73,6 +78,8 @@ final class DiscoveryScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        showOnboardingIfNeeded()
+
         view.backgroundColor = .white
         title = "Discovery"
         setup()
@@ -86,6 +93,23 @@ final class DiscoveryScreenViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         pulsator.position = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height + UIScreen.main.bounds.width / 3)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        pulsator.stop()
+    }
+
+    private func showOnboardingIfNeeded() {
+        if !UserDefaults.standard.bool(forKey: "hasCompletedOnboarding") {
+            let onboardingController = UIOnboardingViewController(withConfiguration: .setUp())
+            onboardingController.delegate = self
+            navigationController?.present(onboardingController, animated: false)
+        }
     }
 
     private func setup() {
@@ -137,10 +161,35 @@ final class DiscoveryScreenViewController: UIViewController {
            !text.isEmpty
         {
             presenter.changePeerName(to: text)
+            name = text
         } else {
             presenter.changePeerName(to: UIDevice.current.name)
+            name = UIDevice.current.name
         }
+        saveNameButton.isUserInteractionEnabled = false
+        saveNameButton.backgroundColor = .inactiveColor
         view.endEditing(true)
+    }
+
+    @objc
+    private func nameChanged() {
+        if nameTextField.text == "" {
+            if UIDevice.current.name != name {
+                saveNameButton.isUserInteractionEnabled = true
+                saveNameButton.backgroundColor = .accentColor
+            } else {
+                saveNameButton.isUserInteractionEnabled = false
+                saveNameButton.backgroundColor = .inactiveColor
+            }
+        } else {
+            if nameTextField.text != name {
+                saveNameButton.isUserInteractionEnabled = true
+                saveNameButton.backgroundColor = .accentColor
+            } else {
+                saveNameButton.isUserInteractionEnabled = false
+                saveNameButton.backgroundColor = .inactiveColor
+            }
+        }
     }
 }
 
@@ -163,5 +212,13 @@ extension DiscoveryScreenViewController: DiscoveryScreenViewInterface {
 extension DiscoveryScreenViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter.itemSelected(at: indexPath)
+    }
+}
+
+extension DiscoveryScreenViewController: UIOnboardingViewControllerDelegate {
+    func didFinishOnboarding(onboardingViewController: UIOnboarding.UIOnboardingViewController) {
+        UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
+        onboardingViewController.modalTransitionStyle = .crossDissolve
+        onboardingViewController.dismiss(animated: true, completion: nil)
     }
 }

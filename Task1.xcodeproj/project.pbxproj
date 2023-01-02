@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */ = {isa = PBXBuildFile; productRef = A52581CE29620FCE00136BE7 /* Pulsator */; };
 		A52581D129621DCA00136BE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52581D029621DCA00136BE7 /* Constants.swift */; };
+		A52581D42962441100136BE7 /* UIOnboarding in Frameworks */ = {isa = PBXBuildFile; productRef = A52581D32962441100136BE7 /* UIOnboarding */; };
+		A52581D62962442C00136BE7 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52581D52962442C00136BE7 /* Onboarding.swift */; };
+		A52581DB2963237B00136BE7 /* EasyTipView in Frameworks */ = {isa = PBXBuildFile; productRef = A52581DA2963237B00136BE7 /* EasyTipView */; };
 		A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C2B328FEF60500E2FD55 /* AppDelegate.swift */; };
 		A529C2BD28FEF60600E2FD55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BC28FEF60600E2FD55 /* Assets.xcassets */; };
 		A529C2C028FEF60600E2FD55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BE28FEF60600E2FD55 /* LaunchScreen.storyboard */; };
@@ -38,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		A52581D029621DCA00136BE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A52581D52962442C00136BE7 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		A529C2B028FEF60500E2FD55 /* Task1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A529C2B328FEF60500E2FD55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A529C2BC28FEF60600E2FD55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -69,8 +73,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5F0DC75291C0E2700253DB3 /* SnapKit in Frameworks */,
+				A52581D42962441100136BE7 /* UIOnboarding in Frameworks */,
 				A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */,
 				A5F0DC78291C167B00253DB3 /* Reusable in Frameworks */,
+				A52581DB2963237B00136BE7 /* EasyTipView in Frameworks */,
 				A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */,
 				A5E6A2BE292A7ECE005018E8 /* GradientLoadingBar in Frameworks */,
 			);
@@ -123,6 +129,7 @@
 				A551D0D22922943100241A76 /* DiscoveryScreen */,
 				A551D0D32922955B00241A76 /* TalkingScreen */,
 				A5F0DC70291C0ADE00253DB3 /* Services */,
+				A52581D52962442C00136BE7 /* Onboarding.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -219,6 +226,8 @@
 				A5F0DC7C291C252D00253DB3 /* SPIndicator */,
 				A5E6A2BD292A7ECE005018E8 /* GradientLoadingBar */,
 				A52581CE29620FCE00136BE7 /* Pulsator */,
+				A52581D32962441100136BE7 /* UIOnboarding */,
+				A52581DA2963237B00136BE7 /* EasyTipView */,
 			);
 			productName = AvitoInternship2022;
 			productReference = A529C2B028FEF60500E2FD55 /* Task1.app */;
@@ -255,6 +264,8 @@
 				A5F0DC7B291C252D00253DB3 /* XCRemoteSwiftPackageReference "SPIndicator" */,
 				A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */,
 				A52581CD29620FCE00136BE7 /* XCRemoteSwiftPackageReference "Pulsator" */,
+				A52581D22962441100136BE7 /* XCRemoteSwiftPackageReference "UIOnboarding" */,
+				A52581D92963237B00136BE7 /* XCRemoteSwiftPackageReference "EasyTipView" */,
 			);
 			productRefGroup = A529C2B128FEF60500E2FD55 /* Products */;
 			projectDirPath = "";
@@ -285,6 +296,7 @@
 				A551D0E3292295A100241A76 /* DiscoveryScreenWireframe.swift in Sources */,
 				A551D0E1292295A100241A76 /* DiscoveryScreenPresenter.swift in Sources */,
 				A529C30628FEFFA000E2FD55 /* BaseWireframe.swift in Sources */,
+				A52581D62962442C00136BE7 /* Onboarding.swift in Sources */,
 				A551D0D82922958500241A76 /* TalkingScreenInterfaces.swift in Sources */,
 				A529C30928FEFFA000E2FD55 /* PresenterInterface.swift in Sources */,
 				A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */,
@@ -536,6 +548,22 @@
 				minimumVersion = 0.6.3;
 			};
 		};
+		A52581D22962441100136BE7 /* XCRemoteSwiftPackageReference "UIOnboarding" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lascic/UIOnboarding.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		A52581D92963237B00136BE7 /* XCRemoteSwiftPackageReference "EasyTipView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/teodorpatras/EasyTipView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		A5E6A2BC292A7ECE005018E8 /* XCRemoteSwiftPackageReference "GradientLoadingBar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fxm90/GradientLoadingBar";
@@ -575,6 +603,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A52581CD29620FCE00136BE7 /* XCRemoteSwiftPackageReference "Pulsator" */;
 			productName = Pulsator;
+		};
+		A52581D32962441100136BE7 /* UIOnboarding */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A52581D22962441100136BE7 /* XCRemoteSwiftPackageReference "UIOnboarding" */;
+			productName = UIOnboarding;
+		};
+		A52581DA2963237B00136BE7 /* EasyTipView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A52581D92963237B00136BE7 /* XCRemoteSwiftPackageReference "EasyTipView" */;
+			productName = EasyTipView;
 		};
 		A5E6A2BD292A7ECE005018E8 /* GradientLoadingBar */ = {
 			isa = XCSwiftPackageProductDependency;

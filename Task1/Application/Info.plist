@@ -5,7 +5,7 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To send your location your peers</string>
+	<string>So you can share your location</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_walkie-talkie._tcp</string>
