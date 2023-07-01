@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "alertkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sparrowcode/AlertKit",
+      "state" : {
+        "revision" : "5809a24430d3d97f5d803f144c2a45840d889fc2",
+        "version" : "5.0.0"
+      }
+    },
+    {
       "identity" : "easytipview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/teodorpatras/EasyTipView",

@@ -1,5 +1,5 @@
 //
-//  DiscoveryScreenPresenter.swift
+//  DiscoveryScreenViewModel.swift
 //  Task1
 //
 //  Created by Игорь Клюжев on 14.11.2022.
@@ -8,11 +8,14 @@
 import Foundation
 import GradientLoadingBar
 import Flurry_iOS_SDK
+import AlertKit
 
-final class DiscoveryScreenPresenter {
+final class DiscoveryScreenViewModel {
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, PeerModel>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, PeerModel>
 
-    private unowned let view: DiscoveryScreenViewInterface
-    private let wireframe: DiscoveryScreenWireframeInterface
+    private let view: DiscoveryScreenViewController
+    private let coordinator: DiscoveryScreenCoordinator
     private var peers = [PeerModel]() {
         didSet {
             applySnapshot()
@@ -24,11 +27,11 @@ final class DiscoveryScreenPresenter {
     private let gradientLoadingBar = GradientLoadingBar()
 
     init(
-        view: DiscoveryScreenViewInterface,
-        wireframe: DiscoveryScreenWireframeInterface
+        view: DiscoveryScreenViewController,
+        coordinator: DiscoveryScreenCoordinator
     ) {
         self.view = view
-        self.wireframe = wireframe
+        self.coordinator = coordinator
 
         connectionManager.discoveryDelegate = self
         connectionManager.startBrowsingForPeers()
@@ -42,9 +45,7 @@ final class DiscoveryScreenPresenter {
     }
 }
 
-// MARK: - Extensions -
-
-extension DiscoveryScreenPresenter: DiscoveryScreenPresenterInterface {
+extension DiscoveryScreenViewModel {
     func itemSelected(at indexPath: IndexPath) {
         Flurry.log(eventName: "trying_to_connect")
         let peer = peers[indexPath.row]
@@ -74,7 +75,7 @@ extension DiscoveryScreenPresenter: DiscoveryScreenPresenterInterface {
     }
 }
 
-extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
+extension DiscoveryScreenViewModel: ConnectionManagerDiscoveryDelegate {
     func peerFound(_ peer: PeerModel) {
         peers.append(peer)
     }
@@ -89,7 +90,7 @@ extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
         Flurry.log(eventName: "connection_session", timed: true)
         DispatchQueue.main.async {
             self.gradientLoadingBar.fadeOut()
-            self.wireframe.showTalkingScreen(withPeer: peer)
+            self.coordinator.showTalkingScreen(withPeer: peer)
             self.view.setAdvertiseButtonTitle("Advertise")
         }
         isAdvertising = false
@@ -100,8 +101,8 @@ extension DiscoveryScreenPresenter: ConnectionManagerDiscoveryDelegate {
         Flurry.endTimedEvent(eventName: "connection_session", parameters: nil)
         DispatchQueue.main.async {
             self.view.setAllowsSelection(true)
-            self.wireframe.showIndicator(withTitle: "Connection declined", message: nil, preset: .error)
-            self.wireframe.dismissTalkingScreen()
+            self.coordinator.showIndicator(withTitle: "Connection declined", message: nil, preset: .error)
+            self.coordinator.dismissTalkingScreen()
         }
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AA0165C2A504760004A6CE3 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA0165B2A504760004A6CE3 /* AlertKit */; };
 		A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */ = {isa = PBXBuildFile; productRef = A52581CE29620FCE00136BE7 /* Pulsator */; };
 		A52581D129621DCA00136BE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52581D029621DCA00136BE7 /* Constants.swift */; };
 		A52581D42962441100136BE7 /* UIOnboarding in Frameworks */ = {isa = PBXBuildFile; productRef = A52581D32962441100136BE7 /* UIOnboarding */; };
@@ -25,10 +26,9 @@
 		A551D0D92922958500241A76 /* TalkingScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D52922958500241A76 /* TalkingScreenPresenter.swift */; };
 		A551D0DA2922958500241A76 /* TalkingScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D62922958500241A76 /* TalkingScreenViewController.swift */; };
 		A551D0DB2922958500241A76 /* TalkingScreenWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D72922958500241A76 /* TalkingScreenWireframe.swift */; };
-		A551D0E0292295A100241A76 /* DiscoveryScreenInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DC292295A100241A76 /* DiscoveryScreenInterfaces.swift */; };
-		A551D0E1292295A100241A76 /* DiscoveryScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DD292295A100241A76 /* DiscoveryScreenPresenter.swift */; };
+		A551D0E1292295A100241A76 /* DiscoveryScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DD292295A100241A76 /* DiscoveryScreenViewModel.swift */; };
 		A551D0E2292295A100241A76 /* DiscoveryScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DE292295A100241A76 /* DiscoveryScreenViewController.swift */; };
-		A551D0E3292295A100241A76 /* DiscoveryScreenWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DF292295A100241A76 /* DiscoveryScreenWireframe.swift */; };
+		A551D0E3292295A100241A76 /* DiscoveryScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DF292295A100241A76 /* DiscoveryScreenCoordinator.swift */; };
 		A551D0E62922A8B600241A76 /* PeerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0E52922A8B600241A76 /* PeerModel.swift */; };
 		A551D0E82922A91D00241A76 /* TalkBlockReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0E72922A91D00241A76 /* TalkBlockReason.swift */; };
 		A551D0EB2922D43B00241A76 /* PeerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0EA2922D43B00241A76 /* PeerCell.swift */; };
@@ -57,10 +57,9 @@
 		A551D0D52922958500241A76 /* TalkingScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenPresenter.swift; sourceTree = "<group>"; };
 		A551D0D62922958500241A76 /* TalkingScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenViewController.swift; sourceTree = "<group>"; };
 		A551D0D72922958500241A76 /* TalkingScreenWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenWireframe.swift; sourceTree = "<group>"; };
-		A551D0DC292295A100241A76 /* DiscoveryScreenInterfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenInterfaces.swift; sourceTree = "<group>"; };
-		A551D0DD292295A100241A76 /* DiscoveryScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenPresenter.swift; sourceTree = "<group>"; };
+		A551D0DD292295A100241A76 /* DiscoveryScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenViewModel.swift; sourceTree = "<group>"; };
 		A551D0DE292295A100241A76 /* DiscoveryScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenViewController.swift; sourceTree = "<group>"; };
-		A551D0DF292295A100241A76 /* DiscoveryScreenWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenWireframe.swift; sourceTree = "<group>"; };
+		A551D0DF292295A100241A76 /* DiscoveryScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenCoordinator.swift; sourceTree = "<group>"; };
 		A551D0E52922A8B600241A76 /* PeerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerModel.swift; sourceTree = "<group>"; };
 		A551D0E72922A91D00241A76 /* TalkBlockReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkBlockReason.swift; sourceTree = "<group>"; };
 		A551D0EA2922D43B00241A76 /* PeerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerCell.swift; sourceTree = "<group>"; };
@@ -85,6 +84,7 @@
 				A52581DB2963237B00136BE7 /* EasyTipView in Frameworks */,
 				A5F0DC7D291C252D00253DB3 /* SPIndicator in Frameworks */,
 				A5E6A2BE292A7ECE005018E8 /* GradientLoadingBar in Frameworks */,
+				0AA0165C2A504760004A6CE3 /* AlertKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,10 +163,9 @@
 			children = (
 				A551D0E92922D43000241A76 /* Cells */,
 				A551D0E42922A8A500241A76 /* Entities */,
-				A551D0DC292295A100241A76 /* DiscoveryScreenInterfaces.swift */,
-				A551D0DD292295A100241A76 /* DiscoveryScreenPresenter.swift */,
+				A551D0DD292295A100241A76 /* DiscoveryScreenViewModel.swift */,
 				A551D0DE292295A100241A76 /* DiscoveryScreenViewController.swift */,
-				A551D0DF292295A100241A76 /* DiscoveryScreenWireframe.swift */,
+				A551D0DF292295A100241A76 /* DiscoveryScreenCoordinator.swift */,
 			);
 			path = DiscoveryScreen;
 			sourceTree = "<group>";
@@ -237,6 +236,7 @@
 				A52581DD2963868800136BE7 /* Flurry */,
 				A52581DF2963868800136BE7 /* FlurryConfig */,
 				A52581E12963868800136BE7 /* FlurryMessaging */,
+				0AA0165B2A504760004A6CE3 /* AlertKit */,
 			);
 			productName = AvitoInternship2022;
 			productReference = A529C2B028FEF60500E2FD55 /* Task1.app */;
@@ -276,6 +276,7 @@
 				A52581D22962441100136BE7 /* XCRemoteSwiftPackageReference "UIOnboarding" */,
 				A52581D92963237B00136BE7 /* XCRemoteSwiftPackageReference "EasyTipView" */,
 				A52581DC2963868800136BE7 /* XCRemoteSwiftPackageReference "FlurrySwiftPackage" */,
+				0AA0165A2A504760004A6CE3 /* XCRemoteSwiftPackageReference "AlertKit" */,
 			);
 			productRefGroup = A529C2B128FEF60500E2FD55 /* Products */;
 			projectDirPath = "";
@@ -303,8 +304,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A551D0E3292295A100241A76 /* DiscoveryScreenWireframe.swift in Sources */,
-				A551D0E1292295A100241A76 /* DiscoveryScreenPresenter.swift in Sources */,
+				A551D0E3292295A100241A76 /* DiscoveryScreenCoordinator.swift in Sources */,
+				A551D0E1292295A100241A76 /* DiscoveryScreenViewModel.swift in Sources */,
 				A529C30628FEFFA000E2FD55 /* BaseWireframe.swift in Sources */,
 				A52581D62962442C00136BE7 /* Onboarding.swift in Sources */,
 				A551D0D82922958500241A76 /* TalkingScreenInterfaces.swift in Sources */,
@@ -321,7 +322,6 @@
 				A529C30728FEFFA000E2FD55 /* ViewInterface.swift in Sources */,
 				A551D0EB2922D43B00241A76 /* PeerCell.swift in Sources */,
 				A551D0E2292295A100241A76 /* DiscoveryScreenViewController.swift in Sources */,
-				A551D0E0292295A100241A76 /* DiscoveryScreenInterfaces.swift in Sources */,
 				A5D629832925718000FF8C96 /* LocationManager.swift in Sources */,
 				A551D0E82922A91D00241A76 /* TalkBlockReason.swift in Sources */,
 			);
@@ -464,7 +464,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4D7YJ8BY8H;
+				DEVELOPMENT_TEAM = 5J5GAMUHDW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Task1/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Walkie-Talkie";
@@ -499,7 +499,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4D7YJ8BY8H;
+				DEVELOPMENT_TEAM = 5J5GAMUHDW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Task1/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Walkie-Talkie";
@@ -550,6 +550,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0AA0165A2A504760004A6CE3 /* XCRemoteSwiftPackageReference "AlertKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparrowcode/AlertKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		A52581CD29620FCE00136BE7 /* XCRemoteSwiftPackageReference "Pulsator" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/shu223/Pulsator";
@@ -617,6 +625,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0AA0165B2A504760004A6CE3 /* AlertKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0AA0165A2A504760004A6CE3 /* XCRemoteSwiftPackageReference "AlertKit" */;
+			productName = AlertKit;
+		};
 		A52581CE29620FCE00136BE7 /* Pulsator */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A52581CD29620FCE00136BE7 /* XCRemoteSwiftPackageReference "Pulsator" */;
