@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0AA0165C2A504760004A6CE3 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA0165B2A504760004A6CE3 /* AlertKit */; };
+		0AA0165E2A504CB0004A6CE3 /* Coordinating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0165D2A504CAF004A6CE3 /* Coordinating.swift */; };
 		A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */ = {isa = PBXBuildFile; productRef = A52581CE29620FCE00136BE7 /* Pulsator */; };
 		A52581D129621DCA00136BE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52581D029621DCA00136BE7 /* Constants.swift */; };
 		A52581D42962441100136BE7 /* UIOnboarding in Frameworks */ = {isa = PBXBuildFile; productRef = A52581D32962441100136BE7 /* UIOnboarding */; };
@@ -19,13 +20,9 @@
 		A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C2B328FEF60500E2FD55 /* AppDelegate.swift */; };
 		A529C2BD28FEF60600E2FD55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BC28FEF60600E2FD55 /* Assets.xcassets */; };
 		A529C2C028FEF60600E2FD55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A529C2BE28FEF60600E2FD55 /* LaunchScreen.storyboard */; };
-		A529C30628FEFFA000E2FD55 /* BaseWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30228FEFFA000E2FD55 /* BaseWireframe.swift */; };
-		A529C30728FEFFA000E2FD55 /* ViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30328FEFFA000E2FD55 /* ViewInterface.swift */; };
-		A529C30928FEFFA000E2FD55 /* PresenterInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A529C30528FEFFA000E2FD55 /* PresenterInterface.swift */; };
-		A551D0D82922958500241A76 /* TalkingScreenInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D42922958500241A76 /* TalkingScreenInterfaces.swift */; };
-		A551D0D92922958500241A76 /* TalkingScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D52922958500241A76 /* TalkingScreenPresenter.swift */; };
+		A551D0D92922958500241A76 /* TalkingScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D52922958500241A76 /* TalkingScreenViewModel.swift */; };
 		A551D0DA2922958500241A76 /* TalkingScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D62922958500241A76 /* TalkingScreenViewController.swift */; };
-		A551D0DB2922958500241A76 /* TalkingScreenWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D72922958500241A76 /* TalkingScreenWireframe.swift */; };
+		A551D0DB2922958500241A76 /* TalkingScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0D72922958500241A76 /* TalkingScreenCoordinator.swift */; };
 		A551D0E1292295A100241A76 /* DiscoveryScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DD292295A100241A76 /* DiscoveryScreenViewModel.swift */; };
 		A551D0E2292295A100241A76 /* DiscoveryScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DE292295A100241A76 /* DiscoveryScreenViewController.swift */; };
 		A551D0E3292295A100241A76 /* DiscoveryScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A551D0DF292295A100241A76 /* DiscoveryScreenCoordinator.swift */; };
@@ -43,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0AA0165D2A504CAF004A6CE3 /* Coordinating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinating.swift; sourceTree = "<group>"; };
 		A52581D029621DCA00136BE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A52581D52962442C00136BE7 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		A529C2B028FEF60500E2FD55 /* Task1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,13 +48,9 @@
 		A529C2BC28FEF60600E2FD55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A529C2BF28FEF60600E2FD55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A529C2C128FEF60600E2FD55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A529C30228FEFFA000E2FD55 /* BaseWireframe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseWireframe.swift; sourceTree = "<group>"; };
-		A529C30328FEFFA000E2FD55 /* ViewInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewInterface.swift; sourceTree = "<group>"; };
-		A529C30528FEFFA000E2FD55 /* PresenterInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterInterface.swift; sourceTree = "<group>"; };
-		A551D0D42922958500241A76 /* TalkingScreenInterfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenInterfaces.swift; sourceTree = "<group>"; };
-		A551D0D52922958500241A76 /* TalkingScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenPresenter.swift; sourceTree = "<group>"; };
+		A551D0D52922958500241A76 /* TalkingScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenViewModel.swift; sourceTree = "<group>"; };
 		A551D0D62922958500241A76 /* TalkingScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenViewController.swift; sourceTree = "<group>"; };
-		A551D0D72922958500241A76 /* TalkingScreenWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenWireframe.swift; sourceTree = "<group>"; };
+		A551D0D72922958500241A76 /* TalkingScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingScreenCoordinator.swift; sourceTree = "<group>"; };
 		A551D0DD292295A100241A76 /* DiscoveryScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenViewModel.swift; sourceTree = "<group>"; };
 		A551D0DE292295A100241A76 /* DiscoveryScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenViewController.swift; sourceTree = "<group>"; };
 		A551D0DF292295A100241A76 /* DiscoveryScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryScreenCoordinator.swift; sourceTree = "<group>"; };
@@ -120,11 +114,11 @@
 		A529C2C828FEF96200E2FD55 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				A529C30128FEFF7800E2FD55 /* ViperBase */,
 				A529C2B328FEF60500E2FD55 /* AppDelegate.swift */,
 				A529C2BE28FEF60600E2FD55 /* LaunchScreen.storyboard */,
 				A529C2C128FEF60600E2FD55 /* Info.plist */,
 				A52581D029621DCA00136BE7 /* Constants.swift */,
+				0AA0165D2A504CAF004A6CE3 /* Coordinating.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -148,16 +142,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		A529C30128FEFF7800E2FD55 /* ViperBase */ = {
-			isa = PBXGroup;
-			children = (
-				A529C30228FEFFA000E2FD55 /* BaseWireframe.swift */,
-				A529C30528FEFFA000E2FD55 /* PresenterInterface.swift */,
-				A529C30328FEFFA000E2FD55 /* ViewInterface.swift */,
-			);
-			path = ViperBase;
-			sourceTree = "<group>";
-		};
 		A551D0D22922943100241A76 /* DiscoveryScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,10 +157,9 @@
 		A551D0D32922955B00241A76 /* TalkingScreen */ = {
 			isa = PBXGroup;
 			children = (
-				A551D0D42922958500241A76 /* TalkingScreenInterfaces.swift */,
-				A551D0D52922958500241A76 /* TalkingScreenPresenter.swift */,
+				A551D0D52922958500241A76 /* TalkingScreenViewModel.swift */,
 				A551D0D62922958500241A76 /* TalkingScreenViewController.swift */,
-				A551D0D72922958500241A76 /* TalkingScreenWireframe.swift */,
+				A551D0D72922958500241A76 /* TalkingScreenCoordinator.swift */,
 			);
 			path = TalkingScreen;
 			sourceTree = "<group>";
@@ -306,20 +289,17 @@
 			files = (
 				A551D0E3292295A100241A76 /* DiscoveryScreenCoordinator.swift in Sources */,
 				A551D0E1292295A100241A76 /* DiscoveryScreenViewModel.swift in Sources */,
-				A529C30628FEFFA000E2FD55 /* BaseWireframe.swift in Sources */,
+				0AA0165E2A504CB0004A6CE3 /* Coordinating.swift in Sources */,
 				A52581D62962442C00136BE7 /* Onboarding.swift in Sources */,
-				A551D0D82922958500241A76 /* TalkingScreenInterfaces.swift in Sources */,
-				A529C30928FEFFA000E2FD55 /* PresenterInterface.swift in Sources */,
 				A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */,
 				A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */,
 				A551D0DA2922958500241A76 /* TalkingScreenViewController.swift in Sources */,
 				A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */,
 				A551D0ED2922D45500241A76 /* Section.swift in Sources */,
 				A52581D129621DCA00136BE7 /* Constants.swift in Sources */,
-				A551D0D92922958500241A76 /* TalkingScreenPresenter.swift in Sources */,
+				A551D0D92922958500241A76 /* TalkingScreenViewModel.swift in Sources */,
 				A551D0E62922A8B600241A76 /* PeerModel.swift in Sources */,
-				A551D0DB2922958500241A76 /* TalkingScreenWireframe.swift in Sources */,
-				A529C30728FEFFA000E2FD55 /* ViewInterface.swift in Sources */,
+				A551D0DB2922958500241A76 /* TalkingScreenCoordinator.swift in Sources */,
 				A551D0EB2922D43B00241A76 /* PeerCell.swift in Sources */,
 				A551D0E2292295A100241A76 /* DiscoveryScreenViewController.swift in Sources */,
 				A5D629832925718000FF8C96 /* LocationManager.swift in Sources */,

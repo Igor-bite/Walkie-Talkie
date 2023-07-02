@@ -1,5 +1,5 @@
 //
-//  TalkingScreenPresenter.swift
+//  TalkingScreenViewModel.swift
 //  Task1
 //
 //  Created by Игорь Клюжев on 14.11.2022.
@@ -10,14 +10,14 @@ import CoreLocation
 import MapKit
 import Flurry_iOS_SDK
 
-final class TalkingScreenPresenter {
+final class TalkingScreenViewModel {
     private enum HintShowedKeys {
         static let sendOkHintHidden = "sendOkHintShowed"
         static let sendLocationHintHidden = "sendLocationHintShowed"
     }
 
-    private unowned let view: TalkingScreenViewInterface
-    private let wireframe: TalkingScreenWireframeInterface
+    private let view: TalkingScreenViewController
+    private let coordinator: TalkingScreenCoordinator
     private let connectionManager = ConnectionManager.shared
     private let locationManager = LocationManager()
     
@@ -33,12 +33,12 @@ final class TalkingScreenPresenter {
     private var peerLocationUpdateDate: Date?
 
     init(
-        view: TalkingScreenViewInterface,
-        wireframe: TalkingScreenWireframeInterface,
+        view: TalkingScreenViewController,
+        coordinator: TalkingScreenCoordinator,
         peer: PeerModel
     ) {
         self.view = view
-        self.wireframe = wireframe
+        self.coordinator = coordinator
         self.peer = peer
         connectionManager.sessionDelegate = self
         view.setPeerName(peer.name)
@@ -96,7 +96,7 @@ final class TalkingScreenPresenter {
 
 // MARK: - Extensions -
 
-extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
+extension TalkingScreenViewModel {
     func talkButtonTouchesBegan() {
         view.setTalkButtonState(.blocked(reason: .recording))
         connectionManager.startStreamingVoice(to: peer)
@@ -144,7 +144,7 @@ extension TalkingScreenPresenter: TalkingScreenPresenterInterface {
     }
 }
 
-extension TalkingScreenPresenter: ConnectionManagerSessionDelegate {
+extension TalkingScreenViewModel: ConnectionManagerSessionDelegate {
     func talkBlocked(withReason reason: TalkBlockReason) {
         DispatchQueue.main.async {
             self.view.setTalkButtonState(.blocked(reason: reason))

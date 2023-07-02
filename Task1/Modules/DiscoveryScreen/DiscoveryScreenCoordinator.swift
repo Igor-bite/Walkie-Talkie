@@ -12,18 +12,24 @@ final class DiscoveryScreenCoordinator: Coordinating {
 
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
+  }
 
+  func start() {
     let moduleViewController = DiscoveryScreenViewController()
     let viewModel = DiscoveryScreenViewModel(view: moduleViewController, coordinator: self)
     moduleViewController.viewModel = viewModel
-  }
 
-  func start() {}
+    if navigationController.viewControllers.isEmpty {
+      navigationController.setViewControllers([moduleViewController], animated: false)
+    } else {
+      navigationController.pushViewController(moduleViewController, animated: true)
+    }
+  }
 }
 
 extension DiscoveryScreenCoordinator {
   func showTalkingScreen(withPeer peer: PeerModel) {
-    //      navigationController.pushViewController(TalkingScreenViewController(), animated: true)
+    TalkingScreenCoordinator(peer: peer, navigationController: navigationController).start()
   }
 
   func dismissTalkingScreen() {}
