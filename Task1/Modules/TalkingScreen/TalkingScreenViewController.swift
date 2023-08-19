@@ -13,8 +13,7 @@ import Pulsator
 import EasyTipView
 
 final class TalkingScreenViewController: UIViewController {
-	// swiftlint:disable:next implicitly_unwrapped_optional
-    var presenter: TalkingScreenPresenterInterface!
+    var viewModel: TalkingScreenViewModel?
 
     private lazy var connectedPeerLabel = {
         let label = UILabel()
@@ -115,7 +114,7 @@ final class TalkingScreenViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        presenter.viewWillDisappear()
+        viewModel?.viewWillDisappear()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -129,7 +128,7 @@ final class TalkingScreenViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        presenter.updateHintsVisibility()
+        viewModel?.updateHintsVisibility()
         mapView.showAnnotations(mapView.annotations, animated: true)
     }
 
@@ -190,21 +189,21 @@ final class TalkingScreenViewController: UIViewController {
     private func talk() {
         generator.prepare()
         generator.selectionChanged()
-        presenter.talkButtonTouchesBegan()
+        viewModel?.talkButtonTouchesBegan()
     }
 
     @objc
     private func end() {
         generator.prepare()
         generator.selectionChanged()
-        presenter.talkButtonTouchesEnded()
+        viewModel?.talkButtonTouchesEnded()
     }
 
     @objc
     private func sendOk() {
         generator.prepare()
         generator.selectionChanged()
-        presenter.sendOkTapped()
+        viewModel?.sendOkTapped()
     }
 
     @objc
@@ -264,13 +263,13 @@ final class TalkingScreenViewController: UIViewController {
     private func sendLocation() {
         generator.prepare()
         generator.selectionChanged()
-        presenter.sendLocationTapped()
+        viewModel?.sendLocationTapped()
     }
 
     private func toggleShareLocation() {
         generator.prepare()
         generator.selectionChanged()
-        presenter.toggleShareLocation()
+        viewModel?.toggleShareLocation()
         if pulsator.isPulsating {
             pulsator.stop()
             sendLocationButton.backgroundColor = .inactiveColor
@@ -288,7 +287,7 @@ enum TalkButtonState {
 
 // MARK: - Extensions -
 
-extension TalkingScreenViewController: TalkingScreenViewInterface {
+extension TalkingScreenViewController {
     func showAnnotation(_ annotation: MKPointAnnotation) {
         if mapView.view(for: annotation) == nil {
             mapView.addAnnotation(annotation)
