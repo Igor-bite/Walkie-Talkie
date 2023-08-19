@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sparrowcode/AlertKit",
       "state" : {
-        "revision" : "5809a24430d3d97f5d803f144c2a45840d889fc2",
-        "version" : "5.0.0"
+        "revision" : "1da133b6f630f4e11d141ce5c05d09b68200278e",
+        "version" : "5.0.1"
       }
     },
     {

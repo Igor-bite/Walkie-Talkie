@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A05549A2A90C8DF002633BE /* StatEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0554982A90C8DF002633BE /* StatEvent.swift */; };
+		0A05549B2A90C8DF002633BE /* StatEventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0554992A90C8DF002633BE /* StatEventsManager.swift */; };
 		0AA0165C2A504760004A6CE3 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA0165B2A504760004A6CE3 /* AlertKit */; };
 		0AA0165E2A504CB0004A6CE3 /* Coordinating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0165D2A504CAF004A6CE3 /* Coordinating.swift */; };
 		A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */ = {isa = PBXBuildFile; productRef = A52581CE29620FCE00136BE7 /* Pulsator */; };
@@ -40,6 +42,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A0554982A90C8DF002633BE /* StatEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatEvent.swift; sourceTree = "<group>"; };
+		0A0554992A90C8DF002633BE /* StatEventsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatEventsManager.swift; sourceTree = "<group>"; };
 		0AA0165D2A504CAF004A6CE3 /* Coordinating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinating.swift; sourceTree = "<group>"; };
 		A52581D029621DCA00136BE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A52581D52962442C00136BE7 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
@@ -85,6 +89,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A0554972A90C8DF002633BE /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				0A0554982A90C8DF002633BE /* StatEvent.swift */,
+				0A0554992A90C8DF002633BE /* StatEventsManager.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
 		A529C2A728FEF60500E2FD55 = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +198,7 @@
 		A5F0DC70291C0ADE00253DB3 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				0A0554972A90C8DF002633BE /* Logging */,
 				A5F0DC71291C0AE800253DB3 /* ConnectionManager.swift */,
 				A5F0DC7E291C2AF000253DB3 /* AudioStreamer.swift */,
 				A5D629822925718000FF8C96 /* LocationManager.swift */,
@@ -291,10 +305,12 @@
 				A551D0E1292295A100241A76 /* DiscoveryScreenViewModel.swift in Sources */,
 				0AA0165E2A504CB0004A6CE3 /* Coordinating.swift in Sources */,
 				A52581D62962442C00136BE7 /* Onboarding.swift in Sources */,
+				0A05549B2A90C8DF002633BE /* StatEventsManager.swift in Sources */,
 				A529C2B428FEF60500E2FD55 /* AppDelegate.swift in Sources */,
 				A5F0DC72291C0AE800253DB3 /* ConnectionManager.swift in Sources */,
 				A551D0DA2922958500241A76 /* TalkingScreenViewController.swift in Sources */,
 				A5F0DC7F291C2AF000253DB3 /* AudioStreamer.swift in Sources */,
+				0A05549A2A90C8DF002633BE /* StatEvent.swift in Sources */,
 				A551D0ED2922D45500241A76 /* Section.swift in Sources */,
 				A52581D129621DCA00136BE7 /* Constants.swift in Sources */,
 				A551D0D92922958500241A76 /* TalkingScreenViewModel.swift in Sources */,
