@@ -11,6 +11,7 @@
 		0A05549B2A90C8DF002633BE /* StatEventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0554992A90C8DF002633BE /* StatEventsManager.swift */; };
 		0AA0165C2A504760004A6CE3 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA0165B2A504760004A6CE3 /* AlertKit */; };
 		0AA0165E2A504CB0004A6CE3 /* Coordinating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0165D2A504CAF004A6CE3 /* Coordinating.swift */; };
+		0AA016612A51B679004A6CE3 /* WeakHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA016602A51B679004A6CE3 /* WeakHolder.swift */; };
 		A52581CF29620FCE00136BE7 /* Pulsator in Frameworks */ = {isa = PBXBuildFile; productRef = A52581CE29620FCE00136BE7 /* Pulsator */; };
 		A52581D129621DCA00136BE7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52581D029621DCA00136BE7 /* Constants.swift */; };
 		A52581D42962441100136BE7 /* UIOnboarding in Frameworks */ = {isa = PBXBuildFile; productRef = A52581D32962441100136BE7 /* UIOnboarding */; };
@@ -45,6 +46,7 @@
 		0A0554982A90C8DF002633BE /* StatEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatEvent.swift; sourceTree = "<group>"; };
 		0A0554992A90C8DF002633BE /* StatEventsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatEventsManager.swift; sourceTree = "<group>"; };
 		0AA0165D2A504CAF004A6CE3 /* Coordinating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinating.swift; sourceTree = "<group>"; };
+		0AA016602A51B679004A6CE3 /* WeakHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakHolder.swift; sourceTree = "<group>"; };
 		A52581D029621DCA00136BE7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A52581D52962442C00136BE7 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		A529C2B028FEF60500E2FD55 /* Task1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +98,14 @@
 				0A0554992A90C8DF002633BE /* StatEventsManager.swift */,
 			);
 			path = Logging;
+      sourceTree = "<group>";
+    };
+		0AA0165F2A51B66F004A6CE3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0AA016602A51B679004A6CE3 /* WeakHolder.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		A529C2A728FEF60500E2FD55 = {
@@ -139,6 +149,7 @@
 		A529C2C928FEF96A00E2FD55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				0AA0165F2A51B66F004A6CE3 /* Utils */,
 				A551D0D22922943100241A76 /* DiscoveryScreen */,
 				A551D0D32922955B00241A76 /* TalkingScreen */,
 				A5F0DC70291C0ADE00253DB3 /* Services */,
@@ -320,6 +331,7 @@
 				A551D0E2292295A100241A76 /* DiscoveryScreenViewController.swift in Sources */,
 				A5D629832925718000FF8C96 /* LocationManager.swift in Sources */,
 				A551D0E82922A91D00241A76 /* TalkBlockReason.swift in Sources */,
+				0AA016612A51B679004A6CE3 /* WeakHolder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

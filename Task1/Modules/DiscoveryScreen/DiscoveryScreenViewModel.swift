@@ -13,7 +13,7 @@ final class DiscoveryScreenViewModel {
   typealias DataSource = UICollectionViewDiffableDataSource<Section, PeerModel>
   typealias Snapshot = NSDiffableDataSourceSnapshot<Section, PeerModel>
 
-  private let view: DiscoveryScreenViewController
+  private weak var view: DiscoveryScreenViewController?
   private let coordinator: DiscoveryScreenCoordinator
   private var peers = [PeerModel]() {
     didSet {
@@ -32,8 +32,7 @@ final class DiscoveryScreenViewModel {
   ) {
     self.view = view
     self.coordinator = coordinator
-
-    connectionManager.discoveryDelegate = self
+    connectionManager.addDiscoveryObserver(self)
     connectionManager.startBrowsingForPeers()
   }
 
@@ -41,7 +40,7 @@ final class DiscoveryScreenViewModel {
     var snapshot = Snapshot()
     snapshot.appendSections([Section.main])
     snapshot.appendItems(peers, toSection: Section.main)
-    view.applySnapshot(snapshot, animatingDifferences: animatingDifferences)
+    view?.applySnapshot(snapshot, animatingDifferences: animatingDifferences)
   }
 }
 
@@ -52,17 +51,17 @@ extension DiscoveryScreenViewModel {
     gradientLoadingBar.fadeIn()
     connectionManager.connectTo(peer)
     DispatchQueue.main.async {
-      self.view.setAllowsSelection(false)
+      self.view?.setAllowsSelection(false)
     }
   }
 
   func advertiseButtonTapped() {
     if isAdvertising {
-      view.setAdvertiseButtonTitle("Advertise")
+      view?.setAdvertiseButtonTitle("Advertise")
       connectionManager.stopAdvertising()
       statEventsManager.log(event: .advertise_started)
     } else {
-      view.setAdvertiseButtonTitle("Stop advertising")
+      view?.setAdvertiseButtonTitle("Stop advertising")
       connectionManager.startAdvertising()
       statEventsManager.log(event: .advertise_stopped)
     }
@@ -91,7 +90,7 @@ extension DiscoveryScreenViewModel: ConnectionManagerDiscoveryDelegate {
     DispatchQueue.main.async {
       self.gradientLoadingBar.fadeOut()
       self.coordinator.showTalkingScreen(withPeer: peer)
-      self.view.setAdvertiseButtonTitle("Advertise")
+      self.view?.setAdvertiseButtonTitle("Advertise")
     }
     isAdvertising = false
     connectionManager.stopAdvertising()
@@ -100,7 +99,7 @@ extension DiscoveryScreenViewModel: ConnectionManagerDiscoveryDelegate {
   func disconnectedFromPeer(_ peer: PeerModel) {
     statEventsManager.endTimedEvent(event: .connection_session)
     DispatchQueue.main.async {
-      self.view.setAllowsSelection(true)
+      self.view?.setAllowsSelection(true)
       self.coordinator.showIndicator(withTitle: "Connection declined", message: nil, preset: .error)
       self.coordinator.dismissTalkingScreen()
     }

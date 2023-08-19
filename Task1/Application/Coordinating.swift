@@ -11,6 +11,7 @@ import SPIndicator
 protocol Coordinating: AnyObject {
   func showIndicator(withTitle title: String, message: String?, preset: SPIndicatorIconPreset)
   func start()
+  func finish()
 }
 
 extension Coordinating {

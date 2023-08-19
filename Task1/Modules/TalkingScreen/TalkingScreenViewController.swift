@@ -13,7 +13,7 @@ import Pulsator
 import EasyTipView
 
 final class TalkingScreenViewController: UIViewController {
-    weak var viewModel: TalkingScreenViewModel?
+    var viewModel: TalkingScreenViewModel?
 
     private lazy var connectedPeerLabel = {
         let label = UILabel()

@@ -15,7 +15,7 @@ final class TalkingScreenViewModel {
     static let sendLocationHintHidden = "sendLocationHintShowed"
   }
 
-  private let view: TalkingScreenViewController
+  private weak var view: TalkingScreenViewController?
   private let coordinator: TalkingScreenCoordinator
   private let connectionManager = ConnectionManager.shared
   private let locationManager = LocationManager()
@@ -33,34 +33,34 @@ final class TalkingScreenViewModel {
   private var peerLocationUpdateDate: Date?
 
   init(
-    view: TalkingScreenViewController,
-    coordinator: TalkingScreenCoordinator,
-    peer: PeerModel
+      view: TalkingScreenViewController,
+      coordinator: TalkingScreenCoordinator,
+      peer: PeerModel
   ) {
-    self.view = view
-    self.coordinator = coordinator
-    self.peer = peer
-    connectionManager.sessionDelegate = self
-    view.setPeerName(peer.name)
-    locationManager.locationUpdated = { [weak self] location in
-      guard let self = self else { return }
-      if self.shouldSendLocationOnNextUpdate {
-        self.shouldSendLocationOnNextUpdate = false
-        self.connectionManager.sendLocation(location, to: peer)
+      self.view = view
+      self.coordinator = coordinator
+      self.peer = peer
+      connectionManager.addSessionObserver(self)
+      view.setPeerName(peer.name)
+      locationManager.locationUpdated = { [weak self] location in
+          guard let self = self else { return }
+          if self.shouldSendLocationOnNextUpdate {
+              self.shouldSendLocationOnNextUpdate = false
+              self.connectionManager.sendLocation(location, to: peer)
+          }
+          if self.isSharingLocation {
+              self.connectionManager.sendLocation(location, to: peer)
+          }
+          let peerLocation = CLLocation(latitude: self.peerLocationAnnotation.coordinate.latitude,
+                                        longitude: self.peerLocationAnnotation.coordinate.longitude)
+          let distance = Int(peerLocation.distance(from: location))
+          DispatchQueue.main.async {
+              self.view?.setPeerDistance(distance)
+          }
       }
-      if self.isSharingLocation {
-        self.connectionManager.sendLocation(location, to: peer)
-      }
-      let peerLocation = CLLocation(latitude: self.peerLocationAnnotation.coordinate.latitude,
-                                    longitude: self.peerLocationAnnotation.coordinate.longitude)
-      let distance = Int(peerLocation.distance(from: location))
-      DispatchQueue.main.async {
-        self.view.setPeerDistance(distance)
-      }
-    }
-    shouldSendLocationOnNextUpdate = true
-    locationManager.startUpdatingLocation()
-    createTimerForDateUpdate()
+      shouldSendLocationOnNextUpdate = true
+      locationManager.startUpdatingLocation()
+      createTimerForDateUpdate()
   }
 
   deinit {
@@ -89,7 +89,7 @@ final class TalkingScreenViewModel {
     let relative = formatter.localizedString(for: peerLocationUpdateDate, relativeTo: now)
 
     DispatchQueue.main.async {
-      self.view.setLocationUpdateDate(with: "Updated \(relative)")
+      self.view?.setLocationUpdateDate(with: "Updated \(relative)")
     }
   }
 }
@@ -98,13 +98,13 @@ final class TalkingScreenViewModel {
 
 extension TalkingScreenViewModel {
   func talkButtonTouchesBegan() {
-    view.setTalkButtonState(.blocked(reason: .recording))
+    view?.setTalkButtonState(.blocked(reason: .recording))
     connectionManager.startStreamingVoice(to: peer)
     statEventsManager.startTimedEvent(event: .voice_streaming)
   }
 
   func talkButtonTouchesEnded() {
-    view.setTalkButtonState(.ready)
+    view?.setTalkButtonState(.ready)
     connectionManager.stopStreamingVoice(to: peer)
     statEventsManager.endTimedEvent(event: .voice_streaming)
   }
@@ -112,7 +112,7 @@ extension TalkingScreenViewModel {
   func sendOkTapped() {
     connectionManager.sendMessage(mes: "OK", to: peer)
     UserDefaults.standard.set(true, forKey: HintShowedKeys.sendOkHintHidden)
-    view.setOkButtonHintVisibility(true)
+    view?.setOkButtonHintVisibility(true)
     statEventsManager.log(event: .sended_ok)
   }
 
@@ -120,12 +120,12 @@ extension TalkingScreenViewModel {
     statEventsManager.log(event: .sended_location)
     connectionManager.sendLocation(locationManager.currentLocation, to: peer)
     UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
-    view.setLocationButtonHintVisibility(true)
+    view?.setLocationButtonHintVisibility(true)
   }
 
   func toggleShareLocation() {
     UserDefaults.standard.set(true, forKey: HintShowedKeys.sendLocationHintHidden)
-    view.setLocationButtonHintVisibility(true)
+    view?.setLocationButtonHintVisibility(true)
     isSharingLocation.toggle()
     if isSharingLocation {
       statEventsManager.startTimedEvent(event: .location_sharing)
@@ -139,21 +139,21 @@ extension TalkingScreenViewModel {
   }
 
   func updateHintsVisibility() {
-    view.setOkButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendOkHintHidden))
-    view.setLocationButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendLocationHintHidden))
+    view?.setOkButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendOkHintHidden))
+    view?.setLocationButtonHintVisibility(UserDefaults.standard.bool(forKey: HintShowedKeys.sendLocationHintHidden))
   }
 }
 
 extension TalkingScreenViewModel: ConnectionManagerSessionDelegate {
   func talkBlocked(withReason reason: TalkBlockReason) {
     DispatchQueue.main.async {
-      self.view.setTalkButtonState(.blocked(reason: reason))
+      self.view?.setTalkButtonState(.blocked(reason: reason))
     }
   }
 
   func talkUnblocked() {
     DispatchQueue.main.async {
-      self.view.setTalkButtonState(.ready)
+      self.view?.setTalkButtonState(.ready)
     }
   }
 
@@ -167,8 +167,8 @@ extension TalkingScreenViewModel: ConnectionManagerSessionDelegate {
     }
 
     DispatchQueue.main.async {
-      self.view.showAnnotation(self.peerLocationAnnotation)
-      self.view.setPeerDistance(distance)
+      self.view?.showAnnotation(self.peerLocationAnnotation)
+      self.view?.setPeerDistance(distance)
     }
   }
 }

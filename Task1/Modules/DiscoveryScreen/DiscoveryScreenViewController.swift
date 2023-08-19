@@ -14,7 +14,7 @@ final class DiscoveryScreenViewController: UIViewController {
   typealias DataSource = UICollectionViewDiffableDataSource<Section, PeerModel>
   typealias Snapshot = NSDiffableDataSourceSnapshot<Section, PeerModel>
 
-  weak var viewModel: DiscoveryScreenViewModel?
+  var viewModel: DiscoveryScreenViewModel?
 
   private lazy var nameTextField: UITextField = {
     let textField = UITextField()

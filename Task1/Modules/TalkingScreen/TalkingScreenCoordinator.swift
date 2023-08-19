@@ -23,4 +23,8 @@ final class TalkingScreenCoordinator: Coordinating {
 
     navigationController.pushViewController(moduleViewController, animated: true)
   }
+
+  func finish() {
+    navigationController.popViewController(animated: true)
+  }
 }

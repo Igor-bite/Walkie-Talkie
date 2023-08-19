@@ -9,6 +9,7 @@ import UIKit
 
 final class DiscoveryScreenCoordinator: Coordinating {
   private let navigationController: UINavigationController
+  private var talkingScreenCoordinator: TalkingScreenCoordinator?
 
   init(navigationController: UINavigationController) {
     self.navigationController = navigationController
@@ -25,12 +26,20 @@ final class DiscoveryScreenCoordinator: Coordinating {
       navigationController.pushViewController(moduleViewController, animated: true)
     }
   }
+
+  func finish() {
+    navigationController.popViewController(animated: true)
+  }
 }
 
 extension DiscoveryScreenCoordinator {
   func showTalkingScreen(withPeer peer: PeerModel) {
-    TalkingScreenCoordinator(peer: peer, navigationController: navigationController).start()
+    let talkingScreenCoordinator = TalkingScreenCoordinator(peer: peer, navigationController: navigationController)
+    self.talkingScreenCoordinator = talkingScreenCoordinator
+    talkingScreenCoordinator.start()
   }
 
-  func dismissTalkingScreen() {}
+  func dismissTalkingScreen() {
+    talkingScreenCoordinator?.finish()
+  }
 }
