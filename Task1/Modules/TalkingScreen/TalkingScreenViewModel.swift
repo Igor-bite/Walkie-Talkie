@@ -33,34 +33,21 @@ final class TalkingScreenViewModel {
   private var peerLocationUpdateDate: Date?
 
   init(
-      view: TalkingScreenViewController,
-      coordinator: TalkingScreenCoordinator,
-      peer: PeerModel
+    view: TalkingScreenViewController,
+    coordinator: TalkingScreenCoordinator,
+    peer: PeerModel
   ) {
-      self.view = view
-      self.coordinator = coordinator
-      self.peer = peer
-      connectionManager.addSessionObserver(self)
-      view.setPeerName(peer.name)
-      locationManager.locationUpdated = { [weak self] location in
-          guard let self = self else { return }
-          if self.shouldSendLocationOnNextUpdate {
-              self.shouldSendLocationOnNextUpdate = false
-              self.connectionManager.sendLocation(location, to: peer)
-          }
-          if self.isSharingLocation {
-              self.connectionManager.sendLocation(location, to: peer)
-          }
-          let peerLocation = CLLocation(latitude: self.peerLocationAnnotation.coordinate.latitude,
-                                        longitude: self.peerLocationAnnotation.coordinate.longitude)
-          let distance = Int(peerLocation.distance(from: location))
-          DispatchQueue.main.async {
-              self.view?.setPeerDistance(distance)
-          }
-      }
-      shouldSendLocationOnNextUpdate = true
-      locationManager.startUpdatingLocation()
-      createTimerForDateUpdate()
+    self.view = view
+    self.coordinator = coordinator
+    self.peer = peer
+    connectionManager.addSessionObserver(self)
+    view.setPeerName(peer.name)
+    locationManager.locationUpdated = { [weak self] location in
+      self?.locationDidUpdate(location: location)
+    }
+    shouldSendLocationOnNextUpdate = true
+    locationManager.startUpdatingLocation()
+    createTimerForDateUpdate()
   }
 
   deinit {
@@ -90,6 +77,22 @@ final class TalkingScreenViewModel {
 
     DispatchQueue.main.async {
       self.view?.setLocationUpdateDate(with: "Updated \(relative)")
+    }
+  }
+
+  private func locationDidUpdate(location: CLLocation) {
+    if shouldSendLocationOnNextUpdate {
+      shouldSendLocationOnNextUpdate = false
+      connectionManager.sendLocation(location, to: peer)
+    }
+    if isSharingLocation {
+      connectionManager.sendLocation(location, to: peer)
+    }
+    let peerLocation = CLLocation(latitude: peerLocationAnnotation.coordinate.latitude,
+                                  longitude: peerLocationAnnotation.coordinate.longitude)
+    let distance = Int(peerLocation.distance(from: location))
+    DispatchQueue.main.async {
+      self.view?.setPeerDistance(distance)
     }
   }
 }
